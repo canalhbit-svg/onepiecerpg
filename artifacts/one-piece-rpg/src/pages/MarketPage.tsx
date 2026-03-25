@@ -9,7 +9,13 @@ import { generateId } from "@/lib/utils";
 
 type FeedbackMsg = { type: "success" | "error"; text: string };
 
-const CATEGORIES = ["Armas", "Suprimentos", "Ferramentas"];
+const CATEGORIES = [
+  { label: "⚔️ Armas", value: "Armas" },
+  { label: "🛡️ Vestuário", value: "Vestuário" },
+  { label: "🧭 Navegação", value: "Navegação" },
+  { label: "🍱 Suprimentos", value: "Suprimentos" },
+  { label: "💎 Raros", value: "Raros" },
+];
 
 function formatBerries(n: number) {
   return `฿ ${n.toLocaleString("pt-BR")}`;
@@ -23,7 +29,6 @@ export default function MarketPage() {
   const [feedback, setFeedback] = useState<FeedbackMsg | null>(null);
   const [buying, setBuying] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState("Armas");
-
   const shipCode = localStorage.getItem("shipCode") || "";
 
   const showFeedback = (msg: FeedbackMsg) => {
@@ -152,18 +157,18 @@ export default function MarketPage() {
       )}
 
       {/* Category tabs */}
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
         {CATEGORIES.map(cat => (
           <button
-            key={cat}
-            onClick={() => setActiveCategory(cat)}
-            className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${
-              activeCategory === cat
+            key={cat.value}
+            onClick={() => setActiveCategory(cat.value)}
+            className={`px-3 py-2 rounded-xl text-sm font-bold transition-all ${
+              activeCategory === cat.value
                 ? "bg-primary text-primary-foreground shadow-lg"
                 : "bg-secondary text-muted-foreground hover:bg-secondary/80"
             }`}
           >
-            {cat}
+            {cat.label}
           </button>
         ))}
       </div>
