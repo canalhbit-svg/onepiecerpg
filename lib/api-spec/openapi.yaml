@@ -1,22 +1,24 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: One Piece RPG Character Sheet API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: character
+    description: Character sheet operations
+  - name: ship
+    description: Ship (crew) operations
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +26,140 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /character:
+    get:
+      operationId: getCharacter
+      tags: [character]
+      summary: Get character sheet
+      responses:
+        "200":
+          description: Character sheet data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Character"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      operationId: saveCharacter
+      tags: [character]
+      summary: Save character sheet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CharacterInput"
+      responses:
+        "200":
+          description: Saved character
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Character"
+
+  /ship/{code}:
+    get:
+      operationId: getShip
+      tags: [ship]
+      summary: Get ship data by code
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Ship data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ship"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateShip
+      tags: [ship]
+      summary: Update ship data
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShipInput"
+      responses:
+        "200":
+          description: Updated ship
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ship"
+
+  /ship/{code}/items:
+    post:
+      operationId: addShipItem
+      tags: [ship]
+      summary: Add item to ship chest
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShipItemInput"
+      responses:
+        "200":
+          description: Updated ship
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ship"
+
+  /ship/{code}/items/{itemId}:
+    delete:
+      operationId: removeShipItem
+      tags: [ship]
+      summary: Remove item from ship chest
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Updated ship
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ship"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +170,172 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    DicePool:
+      type: object
+      description: Extra dice purchased with XP for an attribute
+      properties:
+        d4:
+          type: integer
+          default: 0
+        d6:
+          type: integer
+          default: 0
+        d10:
+          type: integer
+          default: 0
+        d20:
+          type: integer
+          default: 0
+      required: [d4, d6, d10, d20]
+
+    AttributeData:
+      type: object
+      properties:
+        value:
+          type: integer
+          default: 0
+        dicePool:
+          $ref: "#/components/schemas/DicePool"
+      required: [value, dicePool]
+
+    XPLogEntry:
+      type: object
+      properties:
+        id:
+          type: string
+        attribute:
+          type: string
+        diceType:
+          type: string
+        cost:
+          type: integer
+        timestamp:
+          type: string
+      required: [id, attribute, diceType, cost, timestamp]
+
+    CharacterInput:
+      type: object
+      properties:
+        playerName:
+          type: string
+        pirateName:
+          type: string
+        origin:
+          type: string
+        specialty:
+          type: string
+        vigor:
+          $ref: "#/components/schemas/AttributeData"
+        agility:
+          $ref: "#/components/schemas/AttributeData"
+        cunning:
+          $ref: "#/components/schemas/AttributeData"
+        charisma:
+          $ref: "#/components/schemas/AttributeData"
+        spirit:
+          $ref: "#/components/schemas/AttributeData"
+        maxHp:
+          type: integer
+          default: 10
+        currentHp:
+          type: integer
+          default: 10
+        berries:
+          type: integer
+          default: 0
+        xpTotal:
+          type: integer
+          default: 0
+        logbook:
+          type: string
+          default: ""
+        xpLog:
+          type: array
+          items:
+            $ref: "#/components/schemas/XPLogEntry"
+      required:
+        - playerName
+        - pirateName
+        - origin
+        - specialty
+        - vigor
+        - agility
+        - cunning
+        - charisma
+        - spirit
+        - maxHp
+        - currentHp
+        - berries
+        - xpTotal
+        - logbook
+        - xpLog
+
+    Character:
+      allOf:
+        - $ref: "#/components/schemas/CharacterInput"
+        - type: object
+          properties:
+            id:
+              type: integer
+            updatedAt:
+              type: string
+          required: [id, updatedAt]
+
+    ShipItem:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        quantity:
+          type: integer
+      required: [id, name, quantity]
+
+    ShipItemInput:
+      type: object
+      properties:
+        name:
+          type: string
+        quantity:
+          type: integer
+      required: [name, quantity]
+
+    ShipInput:
+      type: object
+      properties:
+        name:
+          type: string
+        maxHull:
+          type: integer
+          default: 100
+        currentHull:
+          type: integer
+          default: 100
+        treasury:
+          type: integer
+          default: 0
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ShipItem"
+      required: [name, maxHull, currentHull, treasury, items]
+
+    Ship:
+      allOf:
+        - $ref: "#/components/schemas/ShipInput"
+        - type: object
+          properties:
+            code:
+              type: string
+            updatedAt:
+              type: string
+          required: [code, updatedAt]

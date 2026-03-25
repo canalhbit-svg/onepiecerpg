@@ -1,0 +1,17 @@
+packages:
+  "framer-motion": "Animations for dice rolls, tabs, and UI transitions"
+  "usehooks-ts": "Hooks like useDebounceCallback for reliable auto-saving"
+  "clsx": "Utility for Tailwind class merging"
+  "tailwind-merge": "Utility for Tailwind class merging"
+
+images:
+  - path: "artifacts/one-piece-rpg/public/images/bg-texture.png"
+    description: "Dark, weathered pirate parchment texture, almost black with subtle gold speckles and maritime map lines, high contrast, dark fantasy style"
+    aspect_ratio: "16:9"
+  - path: "artifacts/one-piece-rpg/public/images/skull-logo.png"
+    description: "A badass pirate skull and crossbones logo, metallic gold and crimson on a black background, elegant, sharp, high contrast"
+    aspect_ratio: "1:1"
+
+notes:
+  - The app uses generated React Query hooks from @workspace/api-client-react.
+  - Assume the backend creates the character/ship if it doesn't exist on first mutation, or handles 404s gracefully on GET. Local state defaults are provided.

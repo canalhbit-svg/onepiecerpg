@@ -1,0 +1,55 @@
+import { pgTable, serial, text, integer, jsonb, timestamp } from "drizzle-orm/pg-core";
+import { createInsertSchema } from "drizzle-zod";
+import { z } from "zod/v4";
+
+export const charactersTable = pgTable("characters", {
+  id: serial("id").primaryKey(),
+  playerName: text("player_name").notNull().default(""),
+  pirateName: text("pirate_name").notNull().default(""),
+  origin: text("origin").notNull().default(""),
+  specialty: text("specialty").notNull().default(""),
+  vigor: jsonb("vigor").notNull().default({ value: 0, dicePool: { d4: 0, d6: 0, d10: 0, d20: 0 } }),
+  agility: jsonb("agility").notNull().default({ value: 0, dicePool: { d4: 0, d6: 0, d10: 0, d20: 0 } }),
+  cunning: jsonb("cunning").notNull().default({ value: 0, dicePool: { d4: 0, d6: 0, d10: 0, d20: 0 } }),
+  charisma: jsonb("charisma").notNull().default({ value: 0, dicePool: { d4: 0, d6: 0, d10: 0, d20: 0 } }),
+  spirit: jsonb("spirit").notNull().default({ value: 0, dicePool: { d4: 0, d6: 0, d10: 0, d20: 0 } }),
+  maxHp: integer("max_hp").notNull().default(10),
+  currentHp: integer("current_hp").notNull().default(10),
+  berries: integer("berries").notNull().default(0),
+  xpTotal: integer("xp_total").notNull().default(0),
+  logbook: text("logbook").notNull().default(""),
+  xpLog: jsonb("xp_log").notNull().default([]),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+const dicepoolSchema = z.object({
+  d4: z.number().int().min(0),
+  d6: z.number().int().min(0),
+  d10: z.number().int().min(0),
+  d20: z.number().int().min(0),
+});
+
+const attributeSchema = z.object({
+  value: z.number().int(),
+  dicePool: dicepoolSchema,
+});
+
+const xpLogEntrySchema = z.object({
+  id: z.string(),
+  attribute: z.string(),
+  diceType: z.string(),
+  cost: z.number().int(),
+  timestamp: z.string(),
+});
+
+export const insertCharacterSchema = createInsertSchema(charactersTable, {
+  vigor: attributeSchema,
+  agility: attributeSchema,
+  cunning: attributeSchema,
+  charisma: attributeSchema,
+  spirit: attributeSchema,
+  xpLog: z.array(xpLogEntrySchema),
+}).omit({ id: true, updatedAt: true });
+
+export type InsertCharacter = z.infer<typeof insertCharacterSchema>;
+export type Character = typeof charactersTable.$inferSelect;

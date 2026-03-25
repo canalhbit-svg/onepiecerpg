@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Ficha de RPG - One Piece"
+version = "1.0.0"
+id = "artifacts/one-piece-rpg"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21629
+
+[services.development]
+run = "pnpm --filter @workspace/one-piece-rpg run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/one-piece-rpg", "run", "build" ]
+publicDir = "artifacts/one-piece-rpg/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21629"
+BASE_PATH = "/"
