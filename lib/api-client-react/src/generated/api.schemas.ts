@@ -60,6 +60,44 @@ export interface InventoryItem {
   equipped: boolean;
 }
 
+export interface WantedPosterInput {
+  pirateName: string;
+  nickname?: string;
+  bounty: number;
+  /** Base64-encoded photo */
+  photo?: string;
+}
+
+export type WantedPoster = WantedPosterInput & {
+  id: string;
+  shipCode: string;
+  createdAt: string;
+};
+
+export interface DevilFruitMove {
+  name: string;
+  /** Dice notation e.g. 1d6 */
+  damage?: string;
+  description?: string;
+}
+
+export type DevilFruitType =
+  (typeof DevilFruitType)[keyof typeof DevilFruitType];
+
+export const DevilFruitType = {
+  Paramecia: "Paramecia",
+  Zoan: "Zoan",
+  Logia: "Logia",
+} as const;
+
+export interface DevilFruit {
+  active: boolean;
+  type?: DevilFruitType;
+  name?: string;
+  /** @maxItems 3 */
+  moves?: DevilFruitMove[];
+}
+
 export interface CharacterInput {
   playerName: string;
   pirateName: string;
@@ -77,6 +115,11 @@ export interface CharacterInput {
   logbook: string;
   xpLog: XPLogEntry[];
   inventory: InventoryItem[];
+  /** Base64-encoded character photo */
+  photo?: string;
+  devilFruit?: DevilFruit;
+  /** List of acquired skill IDs */
+  skills?: string[];
 }
 
 export type Character = CharacterInput & {
@@ -112,4 +155,8 @@ export interface ShipInput {
 export type Ship = ShipInput & {
   code: string;
   updatedAt: string;
+};
+
+export type DeleteWantedPoster200 = {
+  ok: boolean;
 };

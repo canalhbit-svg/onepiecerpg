@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { AttributeData } from "./attributeData";
+import type { DevilFruit } from "./devilFruit";
 import type { InventoryItem } from "./inventoryItem";
 import type { XPLogEntry } from "./xPLogEntry";
 
@@ -26,4 +27,9 @@ export interface CharacterInput {
   logbook: string;
   xpLog: XPLogEntry[];
   inventory: InventoryItem[];
+  /** Base64-encoded character photo */
+  photo?: string;
+  devilFruit?: DevilFruit;
+  /** List of acquired skill IDs */
+  skills?: string[];
 }

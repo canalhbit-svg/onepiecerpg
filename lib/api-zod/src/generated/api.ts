@@ -49,6 +49,10 @@ export const getCharacterResponseOneXpTotalDefault = 0;
 export const getCharacterResponseOneLogbookDefault = ``;
 export const getCharacterResponseOneInventoryItemEquippedDefault = false;
 export const getCharacterResponseOneInventoryDefault = [];
+export const getCharacterResponseOneDevilFruitActiveDefault = false;
+export const getCharacterResponseOneDevilFruitMovesMax = 3;
+
+export const getCharacterResponseOneSkillsDefault = [];
 
 export const GetCharacterResponse = zod
   .object({
@@ -190,6 +194,33 @@ export const GetCharacterResponse = zod
         }),
       )
       .default(getCharacterResponseOneInventoryDefault),
+    photo: zod.string().optional().describe("Base64-encoded character photo"),
+    devilFruit: zod
+      .object({
+        active: zod
+          .boolean()
+          .default(getCharacterResponseOneDevilFruitActiveDefault),
+        type: zod.enum(["Paramecia", "Zoan", "Logia"]).optional(),
+        name: zod.string().optional(),
+        moves: zod
+          .array(
+            zod.object({
+              name: zod.string(),
+              damage: zod
+                .string()
+                .optional()
+                .describe("Dice notation e.g. 1d6"),
+              description: zod.string().optional(),
+            }),
+          )
+          .max(getCharacterResponseOneDevilFruitMovesMax)
+          .optional(),
+      })
+      .optional(),
+    skills: zod
+      .array(zod.string())
+      .default(getCharacterResponseOneSkillsDefault)
+      .describe("List of acquired skill IDs"),
   })
   .and(
     zod.object({
@@ -233,6 +264,10 @@ export const saveCharacterBodyXpTotalDefault = 0;
 export const saveCharacterBodyLogbookDefault = ``;
 export const saveCharacterBodyInventoryItemEquippedDefault = false;
 export const saveCharacterBodyInventoryDefault = [];
+export const saveCharacterBodyDevilFruitActiveDefault = false;
+export const saveCharacterBodyDevilFruitMovesMax = 3;
+
+export const saveCharacterBodySkillsDefault = [];
 
 export const SaveCharacterBody = zod.object({
   playerName: zod.string(),
@@ -330,6 +365,28 @@ export const SaveCharacterBody = zod.object({
       }),
     )
     .default(saveCharacterBodyInventoryDefault),
+  photo: zod.string().optional().describe("Base64-encoded character photo"),
+  devilFruit: zod
+    .object({
+      active: zod.boolean().default(saveCharacterBodyDevilFruitActiveDefault),
+      type: zod.enum(["Paramecia", "Zoan", "Logia"]).optional(),
+      name: zod.string().optional(),
+      moves: zod
+        .array(
+          zod.object({
+            name: zod.string(),
+            damage: zod.string().optional().describe("Dice notation e.g. 1d6"),
+            description: zod.string().optional(),
+          }),
+        )
+        .max(saveCharacterBodyDevilFruitMovesMax)
+        .optional(),
+    })
+    .optional(),
+  skills: zod
+    .array(zod.string())
+    .default(saveCharacterBodySkillsDefault)
+    .describe("List of acquired skill IDs"),
 });
 
 export const saveCharacterResponseOneVigorValueDefault = 0;
@@ -364,6 +421,10 @@ export const saveCharacterResponseOneXpTotalDefault = 0;
 export const saveCharacterResponseOneLogbookDefault = ``;
 export const saveCharacterResponseOneInventoryItemEquippedDefault = false;
 export const saveCharacterResponseOneInventoryDefault = [];
+export const saveCharacterResponseOneDevilFruitActiveDefault = false;
+export const saveCharacterResponseOneDevilFruitMovesMax = 3;
+
+export const saveCharacterResponseOneSkillsDefault = [];
 
 export const SaveCharacterResponse = zod
   .object({
@@ -505,6 +566,33 @@ export const SaveCharacterResponse = zod
         }),
       )
       .default(saveCharacterResponseOneInventoryDefault),
+    photo: zod.string().optional().describe("Base64-encoded character photo"),
+    devilFruit: zod
+      .object({
+        active: zod
+          .boolean()
+          .default(saveCharacterResponseOneDevilFruitActiveDefault),
+        type: zod.enum(["Paramecia", "Zoan", "Logia"]).optional(),
+        name: zod.string().optional(),
+        moves: zod
+          .array(
+            zod.object({
+              name: zod.string(),
+              damage: zod
+                .string()
+                .optional()
+                .describe("Dice notation e.g. 1d6"),
+              description: zod.string().optional(),
+            }),
+          )
+          .max(saveCharacterResponseOneDevilFruitMovesMax)
+          .optional(),
+      })
+      .optional(),
+    skills: zod
+      .array(zod.string())
+      .default(saveCharacterResponseOneSkillsDefault)
+      .describe("List of acquired skill IDs"),
   })
   .and(
     zod.object({
@@ -669,6 +757,70 @@ export const BuyForShipResponse = zod
       updatedAt: zod.string(),
     }),
   );
+
+/**
+ * @summary Get all wanted posters for a ship
+ */
+export const GetShipPostersParams = zod.object({
+  code: zod.coerce.string(),
+});
+
+export const GetShipPostersResponseItem = zod
+  .object({
+    pirateName: zod.string(),
+    nickname: zod.string().optional(),
+    bounty: zod.number(),
+    photo: zod.string().optional().describe("Base64-encoded photo"),
+  })
+  .and(
+    zod.object({
+      id: zod.string(),
+      shipCode: zod.string(),
+      createdAt: zod.date(),
+    }),
+  );
+export const GetShipPostersResponse = zod.array(GetShipPostersResponseItem);
+
+/**
+ * @summary Create a new wanted poster for the ship
+ */
+export const CreateWantedPosterParams = zod.object({
+  code: zod.coerce.string(),
+});
+
+export const CreateWantedPosterBody = zod.object({
+  pirateName: zod.string(),
+  nickname: zod.string().optional(),
+  bounty: zod.number(),
+  photo: zod.string().optional().describe("Base64-encoded photo"),
+});
+
+export const CreateWantedPosterResponse = zod
+  .object({
+    pirateName: zod.string(),
+    nickname: zod.string().optional(),
+    bounty: zod.number(),
+    photo: zod.string().optional().describe("Base64-encoded photo"),
+  })
+  .and(
+    zod.object({
+      id: zod.string(),
+      shipCode: zod.string(),
+      createdAt: zod.date(),
+    }),
+  );
+
+/**
+ * @summary Delete a wanted poster
+ */
+export const DeleteWantedPosterParams = zod.object({
+  code: zod.coerce.string(),
+  posterId: zod.coerce.string(),
+});
+
+export const DeleteWantedPosterResponse = zod.object({
+  ok: zod.boolean(),
+});
 
 /**
  * @summary Remove item from ship chest

@@ -379,6 +379,36 @@ components:
               format: date-time
           required: [id, shipCode, createdAt]
 
+    DevilFruitMove:
+      type: object
+      properties:
+        name:
+          type: string
+        damage:
+          type: string
+          description: "Dice notation e.g. 1d6"
+        description:
+          type: string
+      required: [name]
+
+    DevilFruit:
+      type: object
+      properties:
+        active:
+          type: boolean
+          default: false
+        type:
+          type: string
+          enum: [Paramecia, Zoan, Logia]
+        name:
+          type: string
+        moves:
+          type: array
+          items:
+            $ref: "#/components/schemas/DevilFruitMove"
+          maxItems: 3
+      required: [active]
+
     CharacterInput:
       type: object
       properties:
@@ -427,6 +457,14 @@ components:
         photo:
           type: string
           description: "Base64-encoded character photo"
+        devilFruit:
+          $ref: "#/components/schemas/DevilFruit"
+        skills:
+          type: array
+          items:
+            type: string
+          default: []
+          description: "List of acquired skill IDs"
       required:
         - playerName
         - pirateName

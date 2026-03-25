@@ -19,12 +19,15 @@ import type {
 import type {
   Character,
   CharacterInput,
+  DeleteWantedPoster200,
   ErrorResponse,
   HealthStatus,
   Ship,
   ShipBuyInput,
   ShipInput,
   ShipItemInput,
+  WantedPoster,
+  WantedPosterInput,
 } from "./api.schemas";
 
 import { customFetch } from "../custom-fetch";
@@ -608,6 +611,268 @@ export const useBuyForShip = <
   TContext
 > => {
   return useMutation(getBuyForShipMutationOptions(options));
+};
+
+/**
+ * @summary Get all wanted posters for a ship
+ */
+export const getGetShipPostersUrl = (code: string) => {
+  return `/api/ship/${code}/posters`;
+};
+
+export const getShipPosters = async (
+  code: string,
+  options?: RequestInit,
+): Promise<WantedPoster[]> => {
+  return customFetch<WantedPoster[]>(getGetShipPostersUrl(code), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetShipPostersQueryKey = (code: string) => {
+  return [`/api/ship/${code}/posters`] as const;
+};
+
+export const getGetShipPostersQueryOptions = <
+  TData = Awaited<ReturnType<typeof getShipPosters>>,
+  TError = ErrorType<unknown>,
+>(
+  code: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getShipPosters>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetShipPostersQueryKey(code);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getShipPosters>>> = ({
+    signal,
+  }) => getShipPosters(code, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!code,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getShipPosters>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetShipPostersQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getShipPosters>>
+>;
+export type GetShipPostersQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get all wanted posters for a ship
+ */
+
+export function useGetShipPosters<
+  TData = Awaited<ReturnType<typeof getShipPosters>>,
+  TError = ErrorType<unknown>,
+>(
+  code: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getShipPosters>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetShipPostersQueryOptions(code, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Create a new wanted poster for the ship
+ */
+export const getCreateWantedPosterUrl = (code: string) => {
+  return `/api/ship/${code}/posters`;
+};
+
+export const createWantedPoster = async (
+  code: string,
+  wantedPosterInput: WantedPosterInput,
+  options?: RequestInit,
+): Promise<WantedPoster> => {
+  return customFetch<WantedPoster>(getCreateWantedPosterUrl(code), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(wantedPosterInput),
+  });
+};
+
+export const getCreateWantedPosterMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createWantedPoster>>,
+    TError,
+    { code: string; data: BodyType<WantedPosterInput> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof createWantedPoster>>,
+  TError,
+  { code: string; data: BodyType<WantedPosterInput> },
+  TContext
+> => {
+  const mutationKey = ["createWantedPoster"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof createWantedPoster>>,
+    { code: string; data: BodyType<WantedPosterInput> }
+  > = (props) => {
+    const { code, data } = props ?? {};
+
+    return createWantedPoster(code, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type CreateWantedPosterMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createWantedPoster>>
+>;
+export type CreateWantedPosterMutationBody = BodyType<WantedPosterInput>;
+export type CreateWantedPosterMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Create a new wanted poster for the ship
+ */
+export const useCreateWantedPoster = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createWantedPoster>>,
+    TError,
+    { code: string; data: BodyType<WantedPosterInput> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof createWantedPoster>>,
+  TError,
+  { code: string; data: BodyType<WantedPosterInput> },
+  TContext
+> => {
+  return useMutation(getCreateWantedPosterMutationOptions(options));
+};
+
+/**
+ * @summary Delete a wanted poster
+ */
+export const getDeleteWantedPosterUrl = (code: string, posterId: string) => {
+  return `/api/ship/${code}/posters/${posterId}`;
+};
+
+export const deleteWantedPoster = async (
+  code: string,
+  posterId: string,
+  options?: RequestInit,
+): Promise<DeleteWantedPoster200> => {
+  return customFetch<DeleteWantedPoster200>(
+    getDeleteWantedPosterUrl(code, posterId),
+    {
+      ...options,
+      method: "DELETE",
+    },
+  );
+};
+
+export const getDeleteWantedPosterMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteWantedPoster>>,
+    TError,
+    { code: string; posterId: string },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteWantedPoster>>,
+  TError,
+  { code: string; posterId: string },
+  TContext
+> => {
+  const mutationKey = ["deleteWantedPoster"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof deleteWantedPoster>>,
+    { code: string; posterId: string }
+  > = (props) => {
+    const { code, posterId } = props ?? {};
+
+    return deleteWantedPoster(code, posterId, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type DeleteWantedPosterMutationResult = NonNullable<
+  Awaited<ReturnType<typeof deleteWantedPoster>>
+>;
+
+export type DeleteWantedPosterMutationError = ErrorType<unknown>;
+
+/**
+ * @summary Delete a wanted poster
+ */
+export const useDeleteWantedPoster = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteWantedPoster>>,
+    TError,
+    { code: string; posterId: string },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof deleteWantedPoster>>,
+  TError,
+  { code: string; posterId: string },
+  TContext
+> => {
+  return useMutation(getDeleteWantedPosterMutationOptions(options));
 };
 
 /**

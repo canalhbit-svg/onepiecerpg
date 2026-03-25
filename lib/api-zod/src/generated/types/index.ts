@@ -9,6 +9,10 @@
 export * from "./attributeData";
 export * from "./character";
 export * from "./characterInput";
+export * from "./deleteWantedPoster200";
+export * from "./devilFruit";
+export * from "./devilFruitMove";
+export * from "./devilFruitType";
 export * from "./dicePool";
 export * from "./errorResponse";
 export * from "./healthStatus";
@@ -19,4 +23,6 @@ export * from "./shipBuyInput";
 export * from "./shipInput";
 export * from "./shipItem";
 export * from "./shipItemInput";
+export * from "./wantedPoster";
+export * from "./wantedPosterInput";
 export * from "./xPLogEntry";

@@ -21,6 +21,8 @@ export const charactersTable = pgTable("characters", {
   xpLog: jsonb("xp_log").notNull().default([]),
   inventory: jsonb("inventory").notNull().default([]),
   photo: text("photo"),
+  devilFruit: jsonb("devil_fruit"),
+  skills: jsonb("skills").notNull().default([]),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
@@ -55,6 +57,19 @@ const inventoryItemSchema = z.object({
   equipped: z.boolean(),
 });
 
+const devilFruitMoveSchema = z.object({
+  name: z.string(),
+  damage: z.string().optional(),
+  description: z.string().optional(),
+});
+
+const devilFruitSchema = z.object({
+  active: z.boolean(),
+  type: z.enum(["Paramecia", "Zoan", "Logia"]).optional(),
+  name: z.string().optional(),
+  moves: z.array(devilFruitMoveSchema).max(3).optional(),
+});
+
 export const insertCharacterSchema = createInsertSchema(charactersTable, {
   vigor: attributeSchema,
   agility: attributeSchema,
@@ -63,6 +78,8 @@ export const insertCharacterSchema = createInsertSchema(charactersTable, {
   spirit: attributeSchema,
   xpLog: z.array(xpLogEntrySchema),
   inventory: z.array(inventoryItemSchema),
+  devilFruit: devilFruitSchema.optional().nullable(),
+  skills: z.array(z.string()),
 }).omit({ id: true, updatedAt: true });
 
 export type InsertCharacter = z.infer<typeof insertCharacterSchema>;
