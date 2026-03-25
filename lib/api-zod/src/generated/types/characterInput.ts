@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { AttributeData } from "./attributeData";
+import type { InventoryItem } from "./inventoryItem";
 import type { XPLogEntry } from "./xPLogEntry";
 
 export interface CharacterInput {
@@ -24,4 +25,5 @@ export interface CharacterInput {
   xpTotal: number;
   logbook: string;
   xpLog: XPLogEntry[];
+  inventory: InventoryItem[];
 }

@@ -47,6 +47,8 @@ export const getCharacterResponseOneCurrentHpDefault = 10;
 export const getCharacterResponseOneBerriesDefault = 0;
 export const getCharacterResponseOneXpTotalDefault = 0;
 export const getCharacterResponseOneLogbookDefault = ``;
+export const getCharacterResponseOneInventoryItemEquippedDefault = false;
+export const getCharacterResponseOneInventoryDefault = [];
 
 export const GetCharacterResponse = zod
   .object({
@@ -163,6 +165,31 @@ export const GetCharacterResponse = zod
         timestamp: zod.string(),
       }),
     ),
+    inventory: zod
+      .array(
+        zod.object({
+          id: zod.string(),
+          name: zod.string(),
+          type: zod.enum(["weapon", "consumable", "tool"]),
+          damage: zod
+            .string()
+            .optional()
+            .describe("Dice notation e.g. 1d6, 1d10"),
+          attribute: zod
+            .string()
+            .optional()
+            .describe("Attribute key used for attack rolls"),
+          effect: zod
+            .string()
+            .optional()
+            .describe("Description of item effect"),
+          quantity: zod.number().min(1),
+          equipped: zod
+            .boolean()
+            .default(getCharacterResponseOneInventoryItemEquippedDefault),
+        }),
+      )
+      .default(getCharacterResponseOneInventoryDefault),
   })
   .and(
     zod.object({
@@ -204,6 +231,8 @@ export const saveCharacterBodyCurrentHpDefault = 10;
 export const saveCharacterBodyBerriesDefault = 0;
 export const saveCharacterBodyXpTotalDefault = 0;
 export const saveCharacterBodyLogbookDefault = ``;
+export const saveCharacterBodyInventoryItemEquippedDefault = false;
+export const saveCharacterBodyInventoryDefault = [];
 
 export const SaveCharacterBody = zod.object({
   playerName: zod.string(),
@@ -279,6 +308,28 @@ export const SaveCharacterBody = zod.object({
       timestamp: zod.string(),
     }),
   ),
+  inventory: zod
+    .array(
+      zod.object({
+        id: zod.string(),
+        name: zod.string(),
+        type: zod.enum(["weapon", "consumable", "tool"]),
+        damage: zod
+          .string()
+          .optional()
+          .describe("Dice notation e.g. 1d6, 1d10"),
+        attribute: zod
+          .string()
+          .optional()
+          .describe("Attribute key used for attack rolls"),
+        effect: zod.string().optional().describe("Description of item effect"),
+        quantity: zod.number().min(1),
+        equipped: zod
+          .boolean()
+          .default(saveCharacterBodyInventoryItemEquippedDefault),
+      }),
+    )
+    .default(saveCharacterBodyInventoryDefault),
 });
 
 export const saveCharacterResponseOneVigorValueDefault = 0;
@@ -311,6 +362,8 @@ export const saveCharacterResponseOneCurrentHpDefault = 10;
 export const saveCharacterResponseOneBerriesDefault = 0;
 export const saveCharacterResponseOneXpTotalDefault = 0;
 export const saveCharacterResponseOneLogbookDefault = ``;
+export const saveCharacterResponseOneInventoryItemEquippedDefault = false;
+export const saveCharacterResponseOneInventoryDefault = [];
 
 export const SaveCharacterResponse = zod
   .object({
@@ -427,6 +480,31 @@ export const SaveCharacterResponse = zod
         timestamp: zod.string(),
       }),
     ),
+    inventory: zod
+      .array(
+        zod.object({
+          id: zod.string(),
+          name: zod.string(),
+          type: zod.enum(["weapon", "consumable", "tool"]),
+          damage: zod
+            .string()
+            .optional()
+            .describe("Dice notation e.g. 1d6, 1d10"),
+          attribute: zod
+            .string()
+            .optional()
+            .describe("Attribute key used for attack rolls"),
+          effect: zod
+            .string()
+            .optional()
+            .describe("Description of item effect"),
+          quantity: zod.number().min(1),
+          equipped: zod
+            .boolean()
+            .default(saveCharacterResponseOneInventoryItemEquippedDefault),
+        }),
+      )
+      .default(saveCharacterResponseOneInventoryDefault),
   })
   .and(
     zod.object({
@@ -539,6 +617,44 @@ export const AddShipItemResponse = zod
     maxHull: zod.number().default(addShipItemResponseOneMaxHullDefault),
     currentHull: zod.number().default(addShipItemResponseOneCurrentHullDefault),
     treasury: zod.number().default(addShipItemResponseOneTreasuryDefault),
+    items: zod.array(
+      zod.object({
+        id: zod.string(),
+        name: zod.string(),
+        quantity: zod.number(),
+      }),
+    ),
+  })
+  .and(
+    zod.object({
+      code: zod.string(),
+      updatedAt: zod.string(),
+    }),
+  );
+
+/**
+ * @summary Buy an item with ship treasury and add to chest
+ */
+export const BuyForShipParams = zod.object({
+  code: zod.coerce.string(),
+});
+
+export const BuyForShipBody = zod.object({
+  name: zod.string(),
+  quantity: zod.number(),
+  price: zod.number(),
+});
+
+export const buyForShipResponseOneMaxHullDefault = 100;
+export const buyForShipResponseOneCurrentHullDefault = 100;
+export const buyForShipResponseOneTreasuryDefault = 0;
+
+export const BuyForShipResponse = zod
+  .object({
+    name: zod.string(),
+    maxHull: zod.number().default(buyForShipResponseOneMaxHullDefault),
+    currentHull: zod.number().default(buyForShipResponseOneCurrentHullDefault),
+    treasury: zod.number().default(buyForShipResponseOneTreasuryDefault),
     items: zod.array(
       zod.object({
         id: zod.string(),

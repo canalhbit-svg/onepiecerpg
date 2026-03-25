@@ -22,6 +22,7 @@ import type {
   ErrorResponse,
   HealthStatus,
   Ship,
+  ShipBuyInput,
   ShipInput,
   ShipItemInput,
 } from "./api.schemas";
@@ -520,6 +521,93 @@ export const useAddShipItem = <
   TContext
 > => {
   return useMutation(getAddShipItemMutationOptions(options));
+};
+
+/**
+ * @summary Buy an item with ship treasury and add to chest
+ */
+export const getBuyForShipUrl = (code: string) => {
+  return `/api/ship/${code}/buy`;
+};
+
+export const buyForShip = async (
+  code: string,
+  shipBuyInput: ShipBuyInput,
+  options?: RequestInit,
+): Promise<Ship> => {
+  return customFetch<Ship>(getBuyForShipUrl(code), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(shipBuyInput),
+  });
+};
+
+export const getBuyForShipMutationOptions = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof buyForShip>>,
+    TError,
+    { code: string; data: BodyType<ShipBuyInput> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof buyForShip>>,
+  TError,
+  { code: string; data: BodyType<ShipBuyInput> },
+  TContext
+> => {
+  const mutationKey = ["buyForShip"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof buyForShip>>,
+    { code: string; data: BodyType<ShipBuyInput> }
+  > = (props) => {
+    const { code, data } = props ?? {};
+
+    return buyForShip(code, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type BuyForShipMutationResult = NonNullable<
+  Awaited<ReturnType<typeof buyForShip>>
+>;
+export type BuyForShipMutationBody = BodyType<ShipBuyInput>;
+export type BuyForShipMutationError = ErrorType<ErrorResponse>;
+
+/**
+ * @summary Buy an item with ship treasury and add to chest
+ */
+export const useBuyForShip = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof buyForShip>>,
+    TError,
+    { code: string; data: BodyType<ShipBuyInput> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof buyForShip>>,
+  TError,
+  { code: string; data: BodyType<ShipBuyInput> },
+  TContext
+> => {
+  return useMutation(getBuyForShipMutationOptions(options));
 };
 
 /**

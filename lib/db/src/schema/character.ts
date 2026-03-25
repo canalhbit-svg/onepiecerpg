@@ -19,6 +19,7 @@ export const charactersTable = pgTable("characters", {
   xpTotal: integer("xp_total").notNull().default(0),
   logbook: text("logbook").notNull().default(""),
   xpLog: jsonb("xp_log").notNull().default([]),
+  inventory: jsonb("inventory").notNull().default([]),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
@@ -42,6 +43,17 @@ const xpLogEntrySchema = z.object({
   timestamp: z.string(),
 });
 
+const inventoryItemSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  type: z.enum(["weapon", "consumable", "tool"]),
+  damage: z.string().optional(),
+  attribute: z.string().optional(),
+  effect: z.string().optional(),
+  quantity: z.number().int().min(1),
+  equipped: z.boolean(),
+});
+
 export const insertCharacterSchema = createInsertSchema(charactersTable, {
   vigor: attributeSchema,
   agility: attributeSchema,
@@ -49,6 +61,7 @@ export const insertCharacterSchema = createInsertSchema(charactersTable, {
   charisma: attributeSchema,
   spirit: attributeSchema,
   xpLog: z.array(xpLogEntrySchema),
+  inventory: z.array(inventoryItemSchema),
 }).omit({ id: true, updatedAt: true });
 
 export type InsertCharacter = z.infer<typeof insertCharacterSchema>;

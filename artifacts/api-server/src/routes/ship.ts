@@ -112,6 +112,49 @@ router.post("/ship/:code/items", async (req, res) => {
   }
 });
 
+const buyForShipSchema = z.object({
+  name: z.string().min(1),
+  quantity: z.number().int().min(1),
+  price: z.number().int().min(0),
+});
+
+router.post("/ship/:code/buy", async (req, res) => {
+  try {
+    const { code } = req.params;
+    const parsed = buyForShipSchema.safeParse(req.body);
+    if (!parsed.success) {
+      res.status(400).json({ error: "Invalid buy data" });
+      return;
+    }
+
+    const ship = await getOrCreateShip(code.toUpperCase());
+    const totalCost = parsed.data.price * parsed.data.quantity;
+
+    if (ship.treasury < totalCost) {
+      res.status(400).json({ error: "Tesouro insuficiente" });
+      return;
+    }
+
+    const currentItems = Array.isArray(ship.items) ? (ship.items as { id: string; name: string; quantity: number }[]) : [];
+    const newItem = { id: randomUUID(), name: parsed.data.name, quantity: parsed.data.quantity };
+
+    const updated = await db
+      .update(shipsTable)
+      .set({
+        items: [...currentItems, newItem],
+        treasury: ship.treasury - totalCost,
+        updatedAt: new Date(),
+      })
+      .where(eq(shipsTable.code, code.toUpperCase()))
+      .returning();
+
+    res.json(updated[0]);
+  } catch (err) {
+    req.log.error({ err }, "Failed to buy for ship");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 router.delete("/ship/:code/items/:itemId", async (req, res) => {
   try {
     const { code, itemId } = req.params;

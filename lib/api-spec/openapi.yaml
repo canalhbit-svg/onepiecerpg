@@ -136,6 +136,37 @@ paths:
               schema:
                 $ref: "#/components/schemas/Ship"
 
+  /ship/{code}/buy:
+    post:
+      operationId: buyForShip
+      tags: [ship]
+      summary: Buy an item with ship treasury and add to chest
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShipBuyInput"
+      responses:
+        "200":
+          description: Updated ship
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ship"
+        "400":
+          description: Insufficient treasury
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
   /ship/{code}/items/{itemId}:
     delete:
       operationId: removeShipItem
@@ -221,6 +252,33 @@ components:
           type: string
       required: [id, attribute, diceType, cost, timestamp]
 
+    InventoryItem:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum: [weapon, consumable, tool]
+        damage:
+          type: string
+          description: "Dice notation e.g. 1d6, 1d10"
+        attribute:
+          type: string
+          description: "Attribute key used for attack rolls"
+        effect:
+          type: string
+          description: "Description of item effect"
+        quantity:
+          type: integer
+          minimum: 1
+        equipped:
+          type: boolean
+          default: false
+      required: [id, name, type, quantity, equipped]
+
     CharacterInput:
       type: object
       properties:
@@ -261,6 +319,11 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/XPLogEntry"
+        inventory:
+          type: array
+          items:
+            $ref: "#/components/schemas/InventoryItem"
+          default: []
       required:
         - playerName
         - pirateName
@@ -277,6 +340,7 @@ components:
         - xpTotal
         - logbook
         - xpLog
+        - inventory
 
     Character:
       allOf:
@@ -308,6 +372,17 @@ components:
         quantity:
           type: integer
       required: [name, quantity]
+
+    ShipBuyInput:
+      type: object
+      properties:
+        name:
+          type: string
+        quantity:
+          type: integer
+        price:
+          type: integer
+      required: [name, quantity, price]
 
     ShipInput:
       type: object

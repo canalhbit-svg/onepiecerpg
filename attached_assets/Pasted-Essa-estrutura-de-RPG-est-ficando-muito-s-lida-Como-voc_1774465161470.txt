@@ -1,0 +1,42 @@
+Essa estrutura de RPG está ficando muito sólida! Como você é um Business Manager, vai perceber que essas escolhas de Origem e Especialidade funcionam como os "Setores" de uma empresa: cada um traz um benefício operacional diferente para o bando.
+
+No Replit Agent (ou no Windsurf), use este prompt atualizado. Ele já inclui a lógica exata dos 4 Blues, as Especialidades com seus bônus específicos e as Vantagens de Origem que não mexem nos números, mas sim na história (RP).
+
+🏴‍☠️ Prompt Mestre Atualizado (Copie e cole no Replit)
+"Atualize o meu App de RPG de One Piece com estas definições exatas de Origem e Especialidade:
+
+Seleção de Origem (Os 4 Blues):
+
+East Blue: Vantagem 'Contatos de Porto' (Paga metade do preço em estadias e consertos básicos).
+
+West Blue: Vantagem 'Conhecimento do Submundo' (Sabe onde encontrar mercados negros e informações ilegais).
+
+South Blue: Vantagem 'Herança de Engenharia' (Começa com 1 item tecnológico raro ou ferramenta de precisão).
+
+North Blue: Vantagem 'Aristocracia/Fama' (Começa com +5.000 ฿ extras e tem facilidade com autoridades).
+
+Seleção de Especialidade (Bônus de Classe):
+
+Lutador: Dano base desarmado vira 1d6 (em vez de 1d4) e soma +2 automaticamente na Vida Máxima.
+
+Espadachim: Adiciona ao inventário uma 'Katana/Sabre (1d6)' e habilidade de corte de madeira.
+
+Atirador: Libera o uso do atributo Agilidade para rolagens de ataque à distância (com Estilingue/Pistola).
+
+Navegador: Ativa o modo 'Vantagem' (rola 2 dados e pega o maior) em testes de Astúcia para navegar.
+
+Cozinheiro: Adiciona botão 'Preparar Refeição' (Cura 1d6 de vida do bando todo - 1x por dia).
+
+Médico: Libera ação 'Curar' (Usa Astúcia para estancar sangramentos e curar ferimentos graves).
+
+Lógica de Atributos e XP:
+
+Todos iniciam com 4 Pontos de XP e 1d6 base em cada atributo.
+
+Botões para comprar dados extras: +1d4 (1pt), +1d6 (2pts), +1d10 (4pts), +1d20 (10pts).
+
+O botão 'Rolar' insere o resultado diretamente no campo (que deve continuar editável).
+
+Aba do Navio e Banco de Dados:
+
+Use o banco de dados nativo do Replit para sincronizar o Baú do Bando e Tesouro entre jogadores com o mesmo código.

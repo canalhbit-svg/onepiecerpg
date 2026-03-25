@@ -36,6 +36,30 @@ export interface XPLogEntry {
   timestamp: string;
 }
 
+export type InventoryItemType =
+  (typeof InventoryItemType)[keyof typeof InventoryItemType];
+
+export const InventoryItemType = {
+  weapon: "weapon",
+  consumable: "consumable",
+  tool: "tool",
+} as const;
+
+export interface InventoryItem {
+  id: string;
+  name: string;
+  type: InventoryItemType;
+  /** Dice notation e.g. 1d6, 1d10 */
+  damage?: string;
+  /** Attribute key used for attack rolls */
+  attribute?: string;
+  /** Description of item effect */
+  effect?: string;
+  /** @minimum 1 */
+  quantity: number;
+  equipped: boolean;
+}
+
 export interface CharacterInput {
   playerName: string;
   pirateName: string;
@@ -52,6 +76,7 @@ export interface CharacterInput {
   xpTotal: number;
   logbook: string;
   xpLog: XPLogEntry[];
+  inventory: InventoryItem[];
 }
 
 export type Character = CharacterInput & {
@@ -68,6 +93,12 @@ export interface ShipItem {
 export interface ShipItemInput {
   name: string;
   quantity: number;
+}
+
+export interface ShipBuyInput {
+  name: string;
+  quantity: number;
+  price: number;
 }
 
 export interface ShipInput {

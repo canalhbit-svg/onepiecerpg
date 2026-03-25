@@ -4,14 +4,21 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import CharacterSheet from "@/pages/CharacterSheet";
 import ShipSheet from "@/pages/ShipSheet";
+import MarketPage from "@/pages/MarketPage";
 import NotFound from "@/pages/not-found";
-import { ScrollText, Ship as ShipIcon } from "lucide-react";
+import { ScrollText, Ship as ShipIcon, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const queryClient = new QueryClient();
 
 function Navigation() {
   const [location] = useLocation();
+
+  const tabs = [
+    { href: "/", label: "PERSONAGEM", icon: ScrollText },
+    { href: "/ship", label: "O NAVIO", icon: ShipIcon },
+    { href: "/market", label: "MERCADO", icon: ShoppingBag },
+  ];
 
   return (
     <nav className="sticky top-0 z-40 w-full backdrop-blur-md bg-background/80 border-b border-border shadow-xl shadow-black/50">
@@ -21,24 +28,19 @@ function Navigation() {
           <h1 className="font-display font-bold text-xl tracking-widest text-primary text-glow hidden sm:block">ONE PIECE RPG</h1>
         </div>
         <div className="flex items-center space-x-1">
-          <Link href="/">
-            <button className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all",
-              location === "/" ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" : "text-muted-foreground hover:bg-secondary hover:text-foreground"
-            )}>
-              <ScrollText className="w-4 h-4" />
-              <span className="hidden sm:inline">PERSONAGEM</span>
-            </button>
-          </Link>
-          <Link href="/ship">
-            <button className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all",
-              location === "/ship" ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" : "text-muted-foreground hover:bg-secondary hover:text-foreground"
-            )}>
-              <ShipIcon className="w-4 h-4" />
-              <span className="hidden sm:inline">O NAVIO</span>
-            </button>
-          </Link>
+          {tabs.map(({ href, label, icon: Icon }) => (
+            <Link key={href} href={href}>
+              <button className={cn(
+                "flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-bold transition-all",
+                location === href
+                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
+                  : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+              )}>
+                <Icon className="w-4 h-4" />
+                <span className="hidden sm:inline">{label}</span>
+              </button>
+            </Link>
+          ))}
         </div>
       </div>
     </nav>
@@ -48,19 +50,19 @@ function Navigation() {
 function Router() {
   return (
     <div className="min-h-screen relative font-sans">
-      {/* Background Texture */}
-      <img 
-        src={`${import.meta.env.BASE_URL}images/bg-texture.png`} 
-        alt="Background texture" 
+      <img
+        src={`${import.meta.env.BASE_URL}images/bg-texture.png`}
+        alt="Background texture"
         className="fixed inset-0 w-full h-full object-cover opacity-20 pointer-events-none z-0 mix-blend-overlay"
       />
-      
+
       <Navigation />
-      
+
       <main className="relative z-10 p-4 sm:p-6 lg:p-8">
         <Switch>
           <Route path="/" component={CharacterSheet} />
           <Route path="/ship" component={ShipSheet} />
+          <Route path="/market" component={MarketPage} />
           <Route component={NotFound} />
         </Switch>
       </main>

@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useGetCharacter, useSaveCharacter, type CharacterInput } from "@workspace/api-client-react";
+import { useState, useEffect, useRef } from "react";
+import { useGetCharacter, useSaveCharacter, type CharacterInput, type InventoryItem } from "@workspace/api-client-react";
 import { useDebounceCallback } from "usehooks-ts";
 import { IdentitySection } from "@/components/character/IdentitySection";
 import { XPSection } from "@/components/character/XPSection";
@@ -7,7 +7,9 @@ import { AttributesSection } from "@/components/character/AttributesSection";
 import { CombatSection } from "@/components/character/CombatSection";
 import { LogbookSection } from "@/components/character/LogbookSection";
 import { XPLogSection } from "@/components/character/XPLogSection";
-import { DICE_COSTS, type AttributeKey } from "@/lib/game-data";
+import { InventorySection } from "@/components/character/InventorySection";
+import { DICE_COSTS, SPECIALTY_STARTER_KITS, type AttributeKey } from "@/lib/game-data";
+import { generateId } from "@/lib/utils";
 import { Loader2, Save } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -26,7 +28,8 @@ const defaultChar: CharacterInput = {
   berries: 0,
   xpTotal: 0,
   logbook: "",
-  xpLog: []
+  xpLog: [],
+  inventory: [],
 };
 
 export default function CharacterSheet() {
@@ -35,10 +38,13 @@ export default function CharacterSheet() {
 
   const [localChar, setLocalChar] = useState<CharacterInput | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const prevSpecialty = useRef<string>("");
 
   useEffect(() => {
     if (!localChar && !isLoading) {
-      setLocalChar(serverChar || defaultChar);
+      const base = serverChar || defaultChar;
+      setLocalChar({ ...defaultChar, ...base, inventory: base.inventory ?? [] });
+      prevSpecialty.current = (serverChar?.specialty ?? "");
     }
   }, [serverChar, isLoading, localChar]);
 
@@ -52,7 +58,21 @@ export default function CharacterSheet() {
 
   const handleChange = (updates: Partial<CharacterInput>) => {
     if (!localChar) return;
-    const updated = { ...localChar, ...updates };
+    let updated = { ...localChar, ...updates };
+
+    // Auto-assign starter kit when specialty changes
+    if (updates.specialty && updates.specialty !== prevSpecialty.current) {
+      const kit = SPECIALTY_STARTER_KITS[updates.specialty];
+      if (kit) {
+        const currentInventory: InventoryItem[] = Array.isArray(updated.inventory) ? updated.inventory : [];
+        // Remove old starter kit (any item whose id starts with "starter-")
+        const withoutOldKit = currentInventory.filter(i => !i.id.startsWith("starter-"));
+        const newKit: InventoryItem = { ...kit, id: `starter-${generateId()}` };
+        updated = { ...updated, inventory: [newKit, ...withoutOldKit] };
+      }
+      prevSpecialty.current = updates.specialty;
+    }
+
     setLocalChar(updated);
     debouncedSave(updated);
   };
@@ -65,7 +85,7 @@ export default function CharacterSheet() {
     );
   }
 
-  // Calculate available XP for prop passing
+  // Calculate available XP
   let xpSpent = 0;
   const attributes: AttributeKey[] = ['vigor', 'agility', 'cunning', 'charisma', 'spirit'];
   attributes.forEach(attr => {
@@ -78,11 +98,11 @@ export default function CharacterSheet() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-8 pb-20 relative">
-      
+
       {/* Auto-save indicator */}
       <AnimatePresence>
         {isSaving && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -93,7 +113,7 @@ export default function CharacterSheet() {
           </motion.div>
         )}
         {!isSaving && saveMutation.isSuccess && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -109,7 +129,7 @@ export default function CharacterSheet() {
       <IdentitySection character={localChar} onChange={handleChange} />
       <XPSection character={localChar} onChange={handleChange} />
       <AttributesSection character={localChar} onChange={handleChange} xpAvailable={xpAvailable} />
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
           <CombatSection character={localChar} onChange={handleChange} />
@@ -118,6 +138,8 @@ export default function CharacterSheet() {
           <XPLogSection log={localChar.xpLog} />
         </div>
       </div>
+
+      <InventorySection character={localChar} onChange={handleChange} />
 
       <LogbookSection character={localChar} onChange={handleChange} />
     </div>
