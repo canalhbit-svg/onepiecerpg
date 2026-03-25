@@ -20,6 +20,7 @@ export const charactersTable = pgTable("characters", {
   logbook: text("logbook").notNull().default(""),
   xpLog: jsonb("xp_log").notNull().default([]),
   inventory: jsonb("inventory").notNull().default([]),
+  photo: text("photo"),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 

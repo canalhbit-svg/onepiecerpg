@@ -167,6 +167,78 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
 
+  /ship/{code}/posters:
+    get:
+      operationId: getShipPosters
+      tags: [ship]
+      summary: Get all wanted posters for a ship
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of wanted posters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WantedPoster"
+    post:
+      operationId: createWantedPoster
+      tags: [ship]
+      summary: Create a new wanted poster for the ship
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WantedPosterInput"
+      responses:
+        "200":
+          description: Created poster
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WantedPoster"
+
+  /ship/{code}/posters/{posterId}:
+    delete:
+      operationId: deleteWantedPoster
+      tags: [ship]
+      summary: Delete a wanted poster
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: posterId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                required: [ok]
+
   /ship/{code}/items/{itemId}:
     delete:
       operationId: removeShipItem
@@ -279,6 +351,34 @@ components:
           default: false
       required: [id, name, type, quantity, equipped]
 
+    WantedPosterInput:
+      type: object
+      properties:
+        pirateName:
+          type: string
+        nickname:
+          type: string
+        bounty:
+          type: integer
+        photo:
+          type: string
+          description: "Base64-encoded photo"
+      required: [pirateName, bounty]
+
+    WantedPoster:
+      allOf:
+        - $ref: "#/components/schemas/WantedPosterInput"
+        - type: object
+          properties:
+            id:
+              type: string
+            shipCode:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+          required: [id, shipCode, createdAt]
+
     CharacterInput:
       type: object
       properties:
@@ -324,6 +424,9 @@ components:
           items:
             $ref: "#/components/schemas/InventoryItem"
           default: []
+        photo:
+          type: string
+          description: "Base64-encoded character photo"
       required:
         - playerName
         - pirateName
