@@ -17,6 +17,7 @@ export * from "./dicePool";
 export * from "./errorResponse";
 export * from "./healthStatus";
 export * from "./inventoryItem";
+export * from "./inventoryItemRarity";
 export * from "./inventoryItemType";
 export * from "./ship";
 export * from "./shipBuyInput";

@@ -349,6 +349,13 @@ components:
         equipped:
           type: boolean
           default: false
+        rarity:
+          type: string
+          enum: [comum, raro, epico, lendario]
+          description: "Item rarity tier"
+        masterGiven:
+          type: boolean
+          description: "Given by the GM/system, does not cost Berries"
       required: [id, name, type, quantity, equipped]
 
     WantedPosterInput:

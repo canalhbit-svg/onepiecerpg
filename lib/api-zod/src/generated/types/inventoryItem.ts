@@ -5,6 +5,7 @@
  * One Piece RPG Character Sheet API
  * OpenAPI spec version: 0.1.0
  */
+import type { InventoryItemRarity } from "./inventoryItemRarity";
 import type { InventoryItemType } from "./inventoryItemType";
 
 export interface InventoryItem {
@@ -20,4 +21,8 @@ export interface InventoryItem {
   /** @minimum 1 */
   quantity: number;
   equipped: boolean;
+  /** Item rarity tier */
+  rarity?: InventoryItemRarity;
+  /** Given by the GM/system, does not cost Berries */
+  masterGiven?: boolean;
 }

@@ -55,6 +55,8 @@ const inventoryItemSchema = z.object({
   effect: z.string().optional(),
   quantity: z.number().int().min(1),
   equipped: z.boolean(),
+  rarity: z.enum(["comum", "raro", "epico", "lendario"]).optional(),
+  masterGiven: z.boolean().optional(),
 });
 
 const devilFruitMoveSchema = z.object({

@@ -191,6 +191,14 @@ export const GetCharacterResponse = zod
           equipped: zod
             .boolean()
             .default(getCharacterResponseOneInventoryItemEquippedDefault),
+          rarity: zod
+            .enum(["comum", "raro", "epico", "lendario"])
+            .optional()
+            .describe("Item rarity tier"),
+          masterGiven: zod
+            .boolean()
+            .optional()
+            .describe("Given by the GM\/system, does not cost Berries"),
         }),
       )
       .default(getCharacterResponseOneInventoryDefault),
@@ -362,6 +370,14 @@ export const SaveCharacterBody = zod.object({
         equipped: zod
           .boolean()
           .default(saveCharacterBodyInventoryItemEquippedDefault),
+        rarity: zod
+          .enum(["comum", "raro", "epico", "lendario"])
+          .optional()
+          .describe("Item rarity tier"),
+        masterGiven: zod
+          .boolean()
+          .optional()
+          .describe("Given by the GM\/system, does not cost Berries"),
       }),
     )
     .default(saveCharacterBodyInventoryDefault),
@@ -563,6 +579,14 @@ export const SaveCharacterResponse = zod
           equipped: zod
             .boolean()
             .default(saveCharacterResponseOneInventoryItemEquippedDefault),
+          rarity: zod
+            .enum(["comum", "raro", "epico", "lendario"])
+            .optional()
+            .describe("Item rarity tier"),
+          masterGiven: zod
+            .boolean()
+            .optional()
+            .describe("Given by the GM\/system, does not cost Berries"),
         }),
       )
       .default(saveCharacterResponseOneInventoryDefault),

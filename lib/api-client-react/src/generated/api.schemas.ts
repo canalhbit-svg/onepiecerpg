@@ -45,6 +45,19 @@ export const InventoryItemType = {
   tool: "tool",
 } as const;
 
+/**
+ * Item rarity tier
+ */
+export type InventoryItemRarity =
+  (typeof InventoryItemRarity)[keyof typeof InventoryItemRarity];
+
+export const InventoryItemRarity = {
+  comum: "comum",
+  raro: "raro",
+  epico: "epico",
+  lendario: "lendario",
+} as const;
+
 export interface InventoryItem {
   id: string;
   name: string;
@@ -58,6 +71,10 @@ export interface InventoryItem {
   /** @minimum 1 */
   quantity: number;
   equipped: boolean;
+  /** Item rarity tier */
+  rarity?: InventoryItemRarity;
+  /** Given by the GM/system, does not cost Berries */
+  masterGiven?: boolean;
 }
 
 export interface WantedPosterInput {
