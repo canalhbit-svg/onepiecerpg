@@ -1,0 +1,82 @@
+🔥 Catálogo de Akuma no Mi (Usuários Potenciais e Stats App)
+Regra Geral do App: Qualquer usuário de Akuma no Mi ganha automaticamente a condição passiva 'Fraqueza ao Mar' (-1d10 em testes de natação). No app, configure a Vida Máxima e Vigor para serem os atributos principais de Zoan, enquanto Logia e Paramecia usam Espírito (Haki) e Agilidade.
+
+🦖 Tipo Zoan (Poder Animal/Físico)
+Ótimo para Lutadores, Vigor e combate direto. No app, ao ativar a 'Forma Híbrida', aplique um boost automático de +2 em Vigor e Agilidade e defina o Dano Base como 1d8.
+
+Zoan Comum (Comun):
+
+Neko Neko no Mi: Modelo Leopardo: (Ex: Rob Lucci). +2 em Vigor e Agilidade. Ataque Base: 1d12.
+
+Inu Inu no Mi: Modelo Lobo: +1 em Vigor, +1 em Agilidade. Ataque Base: 1d10.
+
+Ushi Ushi no Mi Model Búfalo: +3 em Vigor, -1 em Agilidade. Ataque Base: 1d10 (Charge).
+
+Ori Ori no Mi (Criação): Modelo Gorila das Montanhas. +3 em Vigor. Ataque Base: 1d12 (Pancada).
+
+Uma Uma no Mi Modelo Cavalo Selvagem: +2 em Agilidade (Velocidade de movimento dobrada). Ataque Base: 1d8 (Coice).
+
+Mogu Mogu no Mi (Criação): Modelo Toupeira Gigante. Concede habilidade de escavar túneis (Agilidade para furtividade subterrânea). Ataque Base: 1d6 (Garras).
+
+Hebi Hebi no Mi Modelo Anaconda: +2 em Vigor. Habilidade de constrição. Ataque Base: 1d10 (Esmagar).
+
+Zoan Ancestral (Rara):
+8. Ryu Ryu no Mi: Modelo Tiranossauro: (Ex: Drake). +4 em Vigor, -2 em Agilidade. Ataque Base: 1d20.
+9. Zou Zou no Mi: Modelo Mamute: +5 em Vigor, -3 em Agilidade. Ataque Base: 1d20 (Pancada).
+10. Kuma Kuma no Mi (Criação): Model Urso das Cavernas Ancestral. +4 em Vigor. Ataque Base: 1d12 (Patada).
+
+Zoan Mítica (Muito Rara):
+11. Tori Tori no Mi: Modelo Fênix: (Ex: Marco). Concede regeneração passiva (Recupera 1d10 de vida por turno), +2 em Agilidade. Ataque Base: 1d10 (Chamas Azuis).
+12. Inu Inu no Mi: Modelo Okami (Lobo Divino - Criação): +3 em Agilidade, +3 em Espírito. Concede habilidade de criar barreiras de vento (Espírito para defesa). Ataque Base: 1d12.
+13. Zou Zou no Mi: Modelo Ganesha (Mítico - Criação): +4 em Vigor, +3 em Espírito. Habilidade de manipular gravidade em área (Espírito para controle de grupo). Ataque Base: 1d20 (Trompa).
+
+🌀 Tipo Paramecia (Poderes do Ambiente/Corpo)
+Ótimo para Táticos, Suporte e Controle de Grupo. No app, crie botões para os golpes específicos baseados em Espírito (Haki) ou Astúcia.
+
+Paramecia do Corpo:
+14. Gomu Gomu no Mi (Hito Hito no Mi: Modelo Nika): (Ex: Luffy). No app, configure a passiva 'Corpo de Borracha' (Resistência a dano físico e elétrico, vulnerabilidade a cortes). Ataque Base: 1d12.
+15. Hana Hana no Mi: (Ex: Robin). Concede a habilidade de brotar membros em qualquer lugar (Astúcia para testes de Agilidade à distância). Ataque Base: 1d8 por membro brotado.
+16. Nika Nika no Mi (Criação - Fruta do Sorriso/Elasticidade): Concede corpo elástico, mas sem a passiva de borracha (Resistência normal). Ataque Base: 1d10.
+17. Dura Dura no Mi (Criação - Fruta do Endurecimento): Concede corpo de metal/diamante (Resistência a dano, -1 Agilidade). Ataque Base: 1d12 (Pancada).
+18. Kachi Kachi no Mi (Criação - Fruta do Calor/Peso): +2 em Vigor. Aumenta o peso do corpo (Impede movimento). Ataque Base: 1d10 (Peso).
+19. Mira Mira no Mi (Criação - Fruta do Espelho): Cria espelhos que refletem ataques e criam um mundo paralelo (Espírito para defesa). Ataque Base: 1d8 (Reflexo).
+
+Paramecia do Ambiente:
+20. Gura Gura no Mi: (Ex: Barba Branca). No app, configure o golpe 'Terremoto' (Dano 1d20 + Espírito em área, ignora 50% da defesa). Ataque Base: 1d12.
+21. Zushi Zushi no Mi (Criação - Fruta da Gravidade): (Ex: Fujitora). Manipula gravidade em área (Espírito para controle de grupo, -Agilidade dos inimigos). Ataque Base: 1d10.
+22. Hie Hie no Mi (Hie Hie no Mi: Modelo Gelo - Criação - Logia da Paramecia): Cria e manipula gelo, mas sem a intangibilidade (Pode ser ferido). Ataque Base: 1d10 (Congelar).
+23. Suna Suna no Mi (Suna Suna no Mi: Modelo Areia - Criação): Cria e manipula areia, mas sem a intangibilidade (Pode ser ferido). Ataque Base: 1d8 (Desidratar).
+24. Ato Ato no Mi: (Ex: Giolla). Transforma o ambiente e pessoas em obras de arte (Astúcia para controle de grupo). Ataque Base: 1d6 (Controle).
+25. Uta Uta no Mi: (Ex: Uta). Cria um mundo paralelo através do som (Espírito para controle de grupo e ilusões). Ataque Base: 1d8 (Som).
+26. Kuma Kuma no Mi (Kuma Kuma no Mi: Modelo Urso - Paramecia - Criação): Concede as patas de urso que podem "puxar/empurrar" tudo (como Kuma, mas sem a Zoan). Ataque Base: 1d10 (Puxar/Empurrar).
+27. Nikyu Nikyu no Mi: (Ex: Kuma). Patas de urso nas mãos que podem repelir tudo (Dano 1d10 + Vigor, repulsa 2d20 metros). Ataque Base: 1d10 (Repelir).
+
+💨 Tipo Logia (Elementos da Natureza)
+Ótimo para Atacantes Principais e Controle de Área. No app, ao ativar a 'Forma Elemental', aplique a condição passiva 'Intangibilidade' (Imune a dano não-Haki), -2 em Vigor, +3 em Espírito e +3 em Agilidade.
+
+Logia Clássica:
+28. Mera Mera no Mi: (Ex: Ace/Sabo). Fogo. Ataque Base: 1d12 + Espírito (Chamas).
+29. Goro Goro no Mi: (Ex: Enel). Eletricidade. No app, configure o golpe 'Relâmpago' (Dano 1d20 + Espírito, ignora 50% da defesa). Ataque Base: 1d12 (Eletricidade).
+30. Yami Yami no Mi: (Ex: Barba Negra). Escuridão. No app, configure a passiva 'Negação de Akuma no Mi' (Anula poderes de outras frutas ao toque). Ataque Base: 1d12 (Escuridão).
+31. Pika Pika no Mi: (Ex: Kizaru). Luz. +4 em Agilidade. Ataque Base: 1d12 (Laser).
+32. Magu Magu no Mi: (Ex: Akainu). Magma. No app, configure o golpe 'Magma' (Dano 1d20 + Espírito em área, ignora 50% da defesa). Ataque Base: 1d12 (Magma).
+33. Aokiji (Hie Hie no Mi: Modelo Gelo): (Ex: Aokiji). Gelo. Ataque Base: 1d12 (Gelo).
+34. Fujitora (Zushi Zushi no Mi: Modelo Gravidade - Logia da Paramecia): Manipula gravidade em área, mas com intangibilidade de gravidade (Dano de área). Ataque Base: 1d10.
+
+Logia Criada:
+35. Tori Tori no Mi: Modelo Relâmpago (Criação - Zoan da Logia): Forma de ave elétrica, +4 em Agilidade, +3 em Espírito. Ataque Base: 1d12 (Relâmpago).
+36. Nika Nika no Mi (Criação - Fruta do Sorriso/Elasticidade - Logia da Paramecia): Corpo elástico, mas com intangibilidade de borracha (Imune a dano físico e elétrico). Ataque Base: 1d10.
+37. Dura Dura no Mi (Criação - Fruta do Endurecimento - Logia da Paramecia): Corpo de metal/diamante, mas com intangibilidade de metal (Imune a dano não-Haki). Ataque Base: 1d12 (Pancada).
+38. Kachi Kachi no Mi (Criação - Fruta do Calor/Peso - Logia da Paramecia): +2 em Vigor, +3 em Espírito. Manipula calor em área, +3 em Agilidade (Forma elemental). Ataque Base: 1d10 (Calor).
+39. Mira Mira no Mi (Criação - Fruta do Espelho - Logia da Paramecia): Cria e manipula espelhos, com intangibilidade de espelho (Reflete ataques). Ataque Base: 1d8 (Reflexo).
+40. Haki Haki no Mi (Criação - Fruta do Haki): Concede todos os tipos de Haki (Armamento, Observação, Conquistador) com 100% de maestria. Ataque Base: 1d12 (Haki).
+41. KaiKai no Mi (Criação - Fruta do Mar): Concede todos os tipos de poderes baseados no mar (Manipulação de água, natação em qualquer lugar). Ataque Base: 1d12 (Água).
+42. SeiSei no Mi (Criação - Fruta do Sangue): Concede manipulação de sangue em área (Astúcia para controle de grupo). Ataque Base: 1d10 (Sangue).
+43. ShiShi no Mi (Criação - Fruta da Morte): Concede manipulação da morte em área (Dano 1d20 + Espírito, ignora 50% da defesa). Ataque Base: 1d12 (Morte).
+44. KiKi no Mi (Criação - Fruta da Vida): Concede manipulação da vida em área (Cura 1d20 de vida, +2 em Vigor). Ataque Base: 1d10 (Vida).
+45. TenTen no Mi (Criação - Fruta do Céu): Concede manipulação do céu em área (Astúcia para controle de grupo e voo). Ataque Base: 1d10 (Céu).
+46. JiJi no Mi (Criação - Fruta do Tempo): Concede manipulação do tempo em área (Astúcia para controle de grupo, +Agilidade). Ataque Base: 1d12 (Tempo).
+47. SpaceSpace no Mi (Criação - Fruta do Espaço): Concede manipulação do espaço em área (Astúcia para controle de grupo, teletransporte). Ataque Base: 1d12 (Espaço).
+48. GodGod no Mi (Criação - Fruta de Deus): Concede todos os tipos de poderes baseados em deuses (Criação de milagres, manipulação divina). Ataque Base: 1d20.
+49. DevilDevil no Mi (Criação - Fruta do Diabo): Concede todos os tipos de poderes baseados em diabos (Criação de pragas, manipulação demoníaca). Ataque Base: 1d20.
+50. AllAll no Mi (Criação - Fruta de Tudo): Concede todos os tipos de poderes baseados em tudo (Manipulação total de tudo). Ataque Base: 1d20.

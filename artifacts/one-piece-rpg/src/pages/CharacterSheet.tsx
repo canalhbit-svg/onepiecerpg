@@ -30,6 +30,9 @@ const defaultChar: CharacterInput = {
   logbook: "",
   xpLog: [],
   inventory: [],
+  currentStamina: 0,
+  haki: null,
+  devilFruit: null,
 };
 
 export default function CharacterSheet() {

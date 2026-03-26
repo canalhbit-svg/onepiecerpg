@@ -22,6 +22,8 @@ export const charactersTable = pgTable("characters", {
   inventory: jsonb("inventory").notNull().default([]),
   photo: text("photo"),
   devilFruit: jsonb("devil_fruit"),
+  haki: jsonb("haki"),
+  currentStamina: integer("current_stamina").notNull().default(0),
   skills: jsonb("skills").notNull().default([]),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
@@ -67,9 +69,20 @@ const devilFruitMoveSchema = z.object({
 
 const devilFruitSchema = z.object({
   active: z.boolean(),
+  fruitId: z.string().optional(),
   type: z.enum(["Paramecia", "Zoan", "Logia"]).optional(),
   name: z.string().optional(),
+  mastery: z.number().int().min(0).max(100).optional(),
   moves: z.array(devilFruitMoveSchema).max(3).optional(),
+});
+
+const hakiDataSchema = z.object({
+  armamentoUnlocked: z.boolean(),
+  observacaoUnlocked: z.boolean(),
+  haoshokuUnlocked: z.boolean(),
+  armamentoActive: z.boolean(),
+  observacaoActive: z.boolean(),
+  haoshokuActive: z.boolean(),
 });
 
 export const insertCharacterSchema = createInsertSchema(charactersTable, {
@@ -81,6 +94,7 @@ export const insertCharacterSchema = createInsertSchema(charactersTable, {
   xpLog: z.array(xpLogEntrySchema),
   inventory: z.array(inventoryItemSchema),
   devilFruit: devilFruitSchema.optional().nullable(),
+  haki: hakiDataSchema.optional().nullable(),
   skills: z.array(z.string()),
 }).omit({ id: true, updatedAt: true });
 

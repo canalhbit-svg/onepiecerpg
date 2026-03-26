@@ -404,17 +404,48 @@ components:
         active:
           type: boolean
           default: false
+        fruitId:
+          type: string
+          description: "ID from the fruit catalog"
         type:
           type: string
           enum: [Paramecia, Zoan, Logia]
         name:
           type: string
+        mastery:
+          type: integer
+          minimum: 0
+          maximum: 100
+          default: 0
         moves:
           type: array
           items:
             $ref: "#/components/schemas/DevilFruitMove"
           maxItems: 3
       required: [active]
+
+    HakiData:
+      type: object
+      properties:
+        armamentoUnlocked:
+          type: boolean
+          default: false
+        observacaoUnlocked:
+          type: boolean
+          default: false
+        haoshokuUnlocked:
+          type: boolean
+          default: false
+        armamentoActive:
+          type: boolean
+          default: false
+        observacaoActive:
+          type: boolean
+          default: false
+        haoshokuActive:
+          type: boolean
+          default: false
+      required: [armamentoUnlocked, observacaoUnlocked, haoshokuUnlocked, armamentoActive, observacaoActive, haoshokuActive]
 
     CharacterInput:
       type: object
@@ -466,6 +497,11 @@ components:
           description: "Base64-encoded character photo"
         devilFruit:
           $ref: "#/components/schemas/DevilFruit"
+        haki:
+          $ref: "#/components/schemas/HakiData"
+        currentStamina:
+          type: integer
+          default: 0
         skills:
           type: array
           items:

@@ -10,8 +10,15 @@ import type { DevilFruitType } from "./devilFruitType";
 
 export interface DevilFruit {
   active: boolean;
+  /** ID from the fruit catalog */
+  fruitId?: string;
   type?: DevilFruitType;
   name?: string;
+  /**
+   * @minimum 0
+   * @maximum 100
+   */
+  mastery?: number;
   /** @maxItems 3 */
   moves?: DevilFruitMove[];
 }

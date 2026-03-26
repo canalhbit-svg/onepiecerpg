@@ -109,10 +109,26 @@ export const DevilFruitType = {
 
 export interface DevilFruit {
   active: boolean;
+  /** ID from the fruit catalog */
+  fruitId?: string;
   type?: DevilFruitType;
   name?: string;
+  /**
+   * @minimum 0
+   * @maximum 100
+   */
+  mastery?: number;
   /** @maxItems 3 */
   moves?: DevilFruitMove[];
+}
+
+export interface HakiData {
+  armamentoUnlocked: boolean;
+  observacaoUnlocked: boolean;
+  haoshokuUnlocked: boolean;
+  armamentoActive: boolean;
+  observacaoActive: boolean;
+  haoshokuActive: boolean;
 }
 
 export interface CharacterInput {
@@ -135,6 +151,8 @@ export interface CharacterInput {
   /** Base64-encoded character photo */
   photo?: string;
   devilFruit?: DevilFruit;
+  haki?: HakiData;
+  currentStamina?: number;
   /** List of acquired skill IDs */
   skills?: string[];
 }

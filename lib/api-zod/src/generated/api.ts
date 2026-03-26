@@ -50,8 +50,19 @@ export const getCharacterResponseOneLogbookDefault = ``;
 export const getCharacterResponseOneInventoryItemEquippedDefault = false;
 export const getCharacterResponseOneInventoryDefault = [];
 export const getCharacterResponseOneDevilFruitActiveDefault = false;
+export const getCharacterResponseOneDevilFruitMasteryDefault = 0;
+export const getCharacterResponseOneDevilFruitMasteryMin = 0;
+export const getCharacterResponseOneDevilFruitMasteryMax = 100;
+
 export const getCharacterResponseOneDevilFruitMovesMax = 3;
 
+export const getCharacterResponseOneHakiArmamentoUnlockedDefault = false;
+export const getCharacterResponseOneHakiObservacaoUnlockedDefault = false;
+export const getCharacterResponseOneHakiHaoshokuUnlockedDefault = false;
+export const getCharacterResponseOneHakiArmamentoActiveDefault = false;
+export const getCharacterResponseOneHakiObservacaoActiveDefault = false;
+export const getCharacterResponseOneHakiHaoshokuActiveDefault = false;
+export const getCharacterResponseOneCurrentStaminaDefault = 0;
 export const getCharacterResponseOneSkillsDefault = [];
 
 export const GetCharacterResponse = zod
@@ -208,8 +219,14 @@ export const GetCharacterResponse = zod
         active: zod
           .boolean()
           .default(getCharacterResponseOneDevilFruitActiveDefault),
+        fruitId: zod.string().optional().describe("ID from the fruit catalog"),
         type: zod.enum(["Paramecia", "Zoan", "Logia"]).optional(),
         name: zod.string().optional(),
+        mastery: zod
+          .number()
+          .min(getCharacterResponseOneDevilFruitMasteryMin)
+          .max(getCharacterResponseOneDevilFruitMasteryMax)
+          .default(getCharacterResponseOneDevilFruitMasteryDefault),
         moves: zod
           .array(
             zod.object({
@@ -225,6 +242,31 @@ export const GetCharacterResponse = zod
           .optional(),
       })
       .optional(),
+    haki: zod
+      .object({
+        armamentoUnlocked: zod
+          .boolean()
+          .default(getCharacterResponseOneHakiArmamentoUnlockedDefault),
+        observacaoUnlocked: zod
+          .boolean()
+          .default(getCharacterResponseOneHakiObservacaoUnlockedDefault),
+        haoshokuUnlocked: zod
+          .boolean()
+          .default(getCharacterResponseOneHakiHaoshokuUnlockedDefault),
+        armamentoActive: zod
+          .boolean()
+          .default(getCharacterResponseOneHakiArmamentoActiveDefault),
+        observacaoActive: zod
+          .boolean()
+          .default(getCharacterResponseOneHakiObservacaoActiveDefault),
+        haoshokuActive: zod
+          .boolean()
+          .default(getCharacterResponseOneHakiHaoshokuActiveDefault),
+      })
+      .optional(),
+    currentStamina: zod
+      .number()
+      .default(getCharacterResponseOneCurrentStaminaDefault),
     skills: zod
       .array(zod.string())
       .default(getCharacterResponseOneSkillsDefault)
@@ -273,8 +315,19 @@ export const saveCharacterBodyLogbookDefault = ``;
 export const saveCharacterBodyInventoryItemEquippedDefault = false;
 export const saveCharacterBodyInventoryDefault = [];
 export const saveCharacterBodyDevilFruitActiveDefault = false;
+export const saveCharacterBodyDevilFruitMasteryDefault = 0;
+export const saveCharacterBodyDevilFruitMasteryMin = 0;
+export const saveCharacterBodyDevilFruitMasteryMax = 100;
+
 export const saveCharacterBodyDevilFruitMovesMax = 3;
 
+export const saveCharacterBodyHakiArmamentoUnlockedDefault = false;
+export const saveCharacterBodyHakiObservacaoUnlockedDefault = false;
+export const saveCharacterBodyHakiHaoshokuUnlockedDefault = false;
+export const saveCharacterBodyHakiArmamentoActiveDefault = false;
+export const saveCharacterBodyHakiObservacaoActiveDefault = false;
+export const saveCharacterBodyHakiHaoshokuActiveDefault = false;
+export const saveCharacterBodyCurrentStaminaDefault = 0;
 export const saveCharacterBodySkillsDefault = [];
 
 export const SaveCharacterBody = zod.object({
@@ -385,8 +438,14 @@ export const SaveCharacterBody = zod.object({
   devilFruit: zod
     .object({
       active: zod.boolean().default(saveCharacterBodyDevilFruitActiveDefault),
+      fruitId: zod.string().optional().describe("ID from the fruit catalog"),
       type: zod.enum(["Paramecia", "Zoan", "Logia"]).optional(),
       name: zod.string().optional(),
+      mastery: zod
+        .number()
+        .min(saveCharacterBodyDevilFruitMasteryMin)
+        .max(saveCharacterBodyDevilFruitMasteryMax)
+        .default(saveCharacterBodyDevilFruitMasteryDefault),
       moves: zod
         .array(
           zod.object({
@@ -399,6 +458,29 @@ export const SaveCharacterBody = zod.object({
         .optional(),
     })
     .optional(),
+  haki: zod
+    .object({
+      armamentoUnlocked: zod
+        .boolean()
+        .default(saveCharacterBodyHakiArmamentoUnlockedDefault),
+      observacaoUnlocked: zod
+        .boolean()
+        .default(saveCharacterBodyHakiObservacaoUnlockedDefault),
+      haoshokuUnlocked: zod
+        .boolean()
+        .default(saveCharacterBodyHakiHaoshokuUnlockedDefault),
+      armamentoActive: zod
+        .boolean()
+        .default(saveCharacterBodyHakiArmamentoActiveDefault),
+      observacaoActive: zod
+        .boolean()
+        .default(saveCharacterBodyHakiObservacaoActiveDefault),
+      haoshokuActive: zod
+        .boolean()
+        .default(saveCharacterBodyHakiHaoshokuActiveDefault),
+    })
+    .optional(),
+  currentStamina: zod.number().default(saveCharacterBodyCurrentStaminaDefault),
   skills: zod
     .array(zod.string())
     .default(saveCharacterBodySkillsDefault)
@@ -438,8 +520,19 @@ export const saveCharacterResponseOneLogbookDefault = ``;
 export const saveCharacterResponseOneInventoryItemEquippedDefault = false;
 export const saveCharacterResponseOneInventoryDefault = [];
 export const saveCharacterResponseOneDevilFruitActiveDefault = false;
+export const saveCharacterResponseOneDevilFruitMasteryDefault = 0;
+export const saveCharacterResponseOneDevilFruitMasteryMin = 0;
+export const saveCharacterResponseOneDevilFruitMasteryMax = 100;
+
 export const saveCharacterResponseOneDevilFruitMovesMax = 3;
 
+export const saveCharacterResponseOneHakiArmamentoUnlockedDefault = false;
+export const saveCharacterResponseOneHakiObservacaoUnlockedDefault = false;
+export const saveCharacterResponseOneHakiHaoshokuUnlockedDefault = false;
+export const saveCharacterResponseOneHakiArmamentoActiveDefault = false;
+export const saveCharacterResponseOneHakiObservacaoActiveDefault = false;
+export const saveCharacterResponseOneHakiHaoshokuActiveDefault = false;
+export const saveCharacterResponseOneCurrentStaminaDefault = 0;
 export const saveCharacterResponseOneSkillsDefault = [];
 
 export const SaveCharacterResponse = zod
@@ -596,8 +689,14 @@ export const SaveCharacterResponse = zod
         active: zod
           .boolean()
           .default(saveCharacterResponseOneDevilFruitActiveDefault),
+        fruitId: zod.string().optional().describe("ID from the fruit catalog"),
         type: zod.enum(["Paramecia", "Zoan", "Logia"]).optional(),
         name: zod.string().optional(),
+        mastery: zod
+          .number()
+          .min(saveCharacterResponseOneDevilFruitMasteryMin)
+          .max(saveCharacterResponseOneDevilFruitMasteryMax)
+          .default(saveCharacterResponseOneDevilFruitMasteryDefault),
         moves: zod
           .array(
             zod.object({
@@ -613,6 +712,31 @@ export const SaveCharacterResponse = zod
           .optional(),
       })
       .optional(),
+    haki: zod
+      .object({
+        armamentoUnlocked: zod
+          .boolean()
+          .default(saveCharacterResponseOneHakiArmamentoUnlockedDefault),
+        observacaoUnlocked: zod
+          .boolean()
+          .default(saveCharacterResponseOneHakiObservacaoUnlockedDefault),
+        haoshokuUnlocked: zod
+          .boolean()
+          .default(saveCharacterResponseOneHakiHaoshokuUnlockedDefault),
+        armamentoActive: zod
+          .boolean()
+          .default(saveCharacterResponseOneHakiArmamentoActiveDefault),
+        observacaoActive: zod
+          .boolean()
+          .default(saveCharacterResponseOneHakiObservacaoActiveDefault),
+        haoshokuActive: zod
+          .boolean()
+          .default(saveCharacterResponseOneHakiHaoshokuActiveDefault),
+      })
+      .optional(),
+    currentStamina: zod
+      .number()
+      .default(saveCharacterResponseOneCurrentStaminaDefault),
     skills: zod
       .array(zod.string())
       .default(saveCharacterResponseOneSkillsDefault)

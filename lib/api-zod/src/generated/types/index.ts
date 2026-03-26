@@ -15,6 +15,7 @@ export * from "./devilFruitMove";
 export * from "./devilFruitType";
 export * from "./dicePool";
 export * from "./errorResponse";
+export * from "./hakiData";
 export * from "./healthStatus";
 export * from "./inventoryItem";
 export * from "./inventoryItemRarity";

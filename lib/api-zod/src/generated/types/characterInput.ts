@@ -7,6 +7,7 @@
  */
 import type { AttributeData } from "./attributeData";
 import type { DevilFruit } from "./devilFruit";
+import type { HakiData } from "./hakiData";
 import type { InventoryItem } from "./inventoryItem";
 import type { XPLogEntry } from "./xPLogEntry";
 
@@ -30,6 +31,8 @@ export interface CharacterInput {
   /** Base64-encoded character photo */
   photo?: string;
   devilFruit?: DevilFruit;
+  haki?: HakiData;
+  currentStamina?: number;
   /** List of acquired skill IDs */
   skills?: string[];
 }

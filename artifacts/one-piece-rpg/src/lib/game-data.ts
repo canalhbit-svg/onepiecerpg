@@ -3,11 +3,6 @@ export const ORIGINS = [
   "West Blue",
   "North Blue",
   "South Blue",
-  "Grand Line",
-  "Novo Mundo",
-  "Skypiea",
-  "Fishman Island",
-  "Wano"
 ] as const;
 
 export const SPECIALTIES = [

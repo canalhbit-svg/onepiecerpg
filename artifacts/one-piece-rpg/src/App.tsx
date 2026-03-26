@@ -5,8 +5,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import CharacterSheet from "@/pages/CharacterSheet";
 import ShipSheet from "@/pages/ShipSheet";
 import MarketPage from "@/pages/MarketPage";
+import PowersPage from "@/pages/PowersPage";
 import NotFound from "@/pages/not-found";
-import { ScrollText, Ship as ShipIcon, ShoppingBag } from "lucide-react";
+import { ScrollText, Ship as ShipIcon, ShoppingBag, Flame } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const queryClient = new QueryClient();
@@ -18,6 +19,7 @@ function Navigation() {
     { href: "/", label: "PERSONAGEM", icon: ScrollText },
     { href: "/ship", label: "O NAVIO", icon: ShipIcon },
     { href: "/market", label: "MERCADO", icon: ShoppingBag },
+    { href: "/powers", label: "PODERES", icon: Flame },
   ];
 
   return (
@@ -63,6 +65,7 @@ function Router() {
           <Route path="/" component={CharacterSheet} />
           <Route path="/ship" component={ShipSheet} />
           <Route path="/market" component={MarketPage} />
+          <Route path="/powers" component={PowersPage} />
           <Route component={NotFound} />
         </Switch>
       </main>
