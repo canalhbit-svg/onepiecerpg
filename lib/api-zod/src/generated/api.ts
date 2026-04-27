@@ -15,7 +15,7 @@ export const HealthCheckResponse = zod.object({
 });
 
 /**
- * @summary Get character sheet
+ * @summary Get character sheet for the authenticated user
  */
 export const getCharacterResponseOneVigorValueDefault = 0;
 export const getCharacterResponseOneVigorDicePoolD4Default = 0;
@@ -280,7 +280,7 @@ export const GetCharacterResponse = zod
   );
 
 /**
- * @summary Save character sheet
+ * @summary Save character sheet for the authenticated user
  */
 export const saveCharacterBodyVigorValueDefault = 0;
 export const saveCharacterBodyVigorDicePoolD4Default = 0;
@@ -740,6 +740,916 @@ export const SaveCharacterResponse = zod
     skills: zod
       .array(zod.string())
       .default(saveCharacterResponseOneSkillsDefault)
+      .describe("List of acquired skill IDs"),
+  })
+  .and(
+    zod.object({
+      id: zod.number(),
+      updatedAt: zod.string(),
+    }),
+  );
+
+/**
+ * @summary Get the currently authenticated user
+ */
+export const GetCurrentAuthUserResponse = zod.object({
+  user: zod.union([
+    zod.object({
+      id: zod.string(),
+      email: zod.string().email().nullable(),
+      firstName: zod.string().nullable(),
+      lastName: zod.string().nullable(),
+      profileImageUrl: zod.string().nullable(),
+    }),
+    zod.null(),
+  ]),
+});
+
+/**
+ * @summary Start the browser OIDC login flow
+ */
+export const BeginBrowserLoginQueryParams = zod.object({
+  returnTo: zod.coerce.string().optional(),
+});
+
+/**
+ * @summary Complete the browser OIDC login flow
+ */
+export const HandleBrowserLoginCallbackQueryParams = zod.object({
+  code: zod.coerce.string().optional(),
+  state: zod.coerce.string().optional(),
+  iss: zod.coerce.string().url().optional(),
+});
+
+/**
+ * @summary Exchange a mobile OIDC code for a session token
+ */
+
+export const ExchangeMobileAuthorizationCodeBody = zod.object({
+  code: zod.string().min(1),
+  code_verifier: zod.string().min(1),
+  redirect_uri: zod.string().url().min(1),
+  state: zod.string().min(1),
+  nonce: zod.string().min(1).optional(),
+});
+
+export const ExchangeMobileAuthorizationCodeResponse = zod.object({
+  token: zod.string(),
+});
+
+/**
+ * @summary Delete a mobile session token
+ */
+export const LogoutMobileSessionResponse = zod.object({
+  success: zod.boolean(),
+});
+
+/**
+ * @summary (Master) List all users with character info
+ */
+export const ListAllUsersResponseItem = zod.object({
+  id: zod.string(),
+  email: zod.string().email().nullable(),
+  firstName: zod.string().nullish(),
+  lastName: zod.string().nullish(),
+  profileImageUrl: zod.string().nullish(),
+  role: zod.enum(["mestre", "jogador"]),
+  pirateName: zod.string().nullish(),
+  shipCode: zod.string().nullish(),
+  xpTotal: zod.number().nullish(),
+  bounty: zod.number().nullish(),
+  hasCharacter: zod.boolean().optional(),
+});
+export const ListAllUsersResponse = zod.array(ListAllUsersResponseItem);
+
+/**
+ * @summary (Master) Get a user's character
+ */
+export const GetCharacterByUserIdParams = zod.object({
+  userId: zod.coerce.string(),
+});
+
+export const getCharacterByUserIdResponseOneVigorValueDefault = 0;
+export const getCharacterByUserIdResponseOneVigorDicePoolD4Default = 0;
+export const getCharacterByUserIdResponseOneVigorDicePoolD6Default = 0;
+export const getCharacterByUserIdResponseOneVigorDicePoolD10Default = 0;
+export const getCharacterByUserIdResponseOneVigorDicePoolD20Default = 0;
+export const getCharacterByUserIdResponseOneAgilityValueDefault = 0;
+export const getCharacterByUserIdResponseOneAgilityDicePoolD4Default = 0;
+export const getCharacterByUserIdResponseOneAgilityDicePoolD6Default = 0;
+export const getCharacterByUserIdResponseOneAgilityDicePoolD10Default = 0;
+export const getCharacterByUserIdResponseOneAgilityDicePoolD20Default = 0;
+export const getCharacterByUserIdResponseOneCunningValueDefault = 0;
+export const getCharacterByUserIdResponseOneCunningDicePoolD4Default = 0;
+export const getCharacterByUserIdResponseOneCunningDicePoolD6Default = 0;
+export const getCharacterByUserIdResponseOneCunningDicePoolD10Default = 0;
+export const getCharacterByUserIdResponseOneCunningDicePoolD20Default = 0;
+export const getCharacterByUserIdResponseOneCharismaValueDefault = 0;
+export const getCharacterByUserIdResponseOneCharismaDicePoolD4Default = 0;
+export const getCharacterByUserIdResponseOneCharismaDicePoolD6Default = 0;
+export const getCharacterByUserIdResponseOneCharismaDicePoolD10Default = 0;
+export const getCharacterByUserIdResponseOneCharismaDicePoolD20Default = 0;
+export const getCharacterByUserIdResponseOneSpiritValueDefault = 0;
+export const getCharacterByUserIdResponseOneSpiritDicePoolD4Default = 0;
+export const getCharacterByUserIdResponseOneSpiritDicePoolD6Default = 0;
+export const getCharacterByUserIdResponseOneSpiritDicePoolD10Default = 0;
+export const getCharacterByUserIdResponseOneSpiritDicePoolD20Default = 0;
+export const getCharacterByUserIdResponseOneMaxHpDefault = 10;
+export const getCharacterByUserIdResponseOneCurrentHpDefault = 10;
+export const getCharacterByUserIdResponseOneBerriesDefault = 0;
+export const getCharacterByUserIdResponseOneXpTotalDefault = 0;
+export const getCharacterByUserIdResponseOneLogbookDefault = ``;
+export const getCharacterByUserIdResponseOneInventoryItemEquippedDefault = false;
+export const getCharacterByUserIdResponseOneInventoryDefault = [];
+export const getCharacterByUserIdResponseOneDevilFruitActiveDefault = false;
+export const getCharacterByUserIdResponseOneDevilFruitMasteryDefault = 0;
+export const getCharacterByUserIdResponseOneDevilFruitMasteryMin = 0;
+export const getCharacterByUserIdResponseOneDevilFruitMasteryMax = 100;
+
+export const getCharacterByUserIdResponseOneDevilFruitMovesMax = 3;
+
+export const getCharacterByUserIdResponseOneHakiArmamentoUnlockedDefault = false;
+export const getCharacterByUserIdResponseOneHakiObservacaoUnlockedDefault = false;
+export const getCharacterByUserIdResponseOneHakiHaoshokuUnlockedDefault = false;
+export const getCharacterByUserIdResponseOneHakiArmamentoActiveDefault = false;
+export const getCharacterByUserIdResponseOneHakiObservacaoActiveDefault = false;
+export const getCharacterByUserIdResponseOneHakiHaoshokuActiveDefault = false;
+export const getCharacterByUserIdResponseOneCurrentStaminaDefault = 0;
+export const getCharacterByUserIdResponseOneSkillsDefault = [];
+
+export const GetCharacterByUserIdResponse = zod
+  .object({
+    playerName: zod.string(),
+    pirateName: zod.string(),
+    origin: zod.string(),
+    specialty: zod.string(),
+    vigor: zod.object({
+      value: zod
+        .number()
+        .default(getCharacterByUserIdResponseOneVigorValueDefault),
+      dicePool: zod
+        .object({
+          d4: zod
+            .number()
+            .default(getCharacterByUserIdResponseOneVigorDicePoolD4Default),
+          d6: zod
+            .number()
+            .default(getCharacterByUserIdResponseOneVigorDicePoolD6Default),
+          d10: zod
+            .number()
+            .default(getCharacterByUserIdResponseOneVigorDicePoolD10Default),
+          d20: zod
+            .number()
+            .default(getCharacterByUserIdResponseOneVigorDicePoolD20Default),
+        })
+        .describe("Extra dice purchased with XP for an attribute"),
+    }),
+    agility: zod.object({
+      value: zod
+        .number()
+        .default(getCharacterByUserIdResponseOneAgilityValueDefault),
+      dicePool: zod
+        .object({
+          d4: zod
+            .number()
+            .default(getCharacterByUserIdResponseOneAgilityDicePoolD4Default),
+          d6: zod
+            .number()
+            .default(getCharacterByUserIdResponseOneAgilityDicePoolD6Default),
+          d10: zod
+            .number()
+            .default(getCharacterByUserIdResponseOneAgilityDicePoolD10Default),
+          d20: zod
+            .number()
+            .default(getCharacterByUserIdResponseOneAgilityDicePoolD20Default),
+        })
+        .describe("Extra dice purchased with XP for an attribute"),
+    }),
+    cunning: zod.object({
+      value: zod
+        .number()
+        .default(getCharacterByUserIdResponseOneCunningValueDefault),
+      dicePool: zod
+        .object({
+          d4: zod
+            .number()
+            .default(getCharacterByUserIdResponseOneCunningDicePoolD4Default),
+          d6: zod
+            .number()
+            .default(getCharacterByUserIdResponseOneCunningDicePoolD6Default),
+          d10: zod
+            .number()
+            .default(getCharacterByUserIdResponseOneCunningDicePoolD10Default),
+          d20: zod
+            .number()
+            .default(getCharacterByUserIdResponseOneCunningDicePoolD20Default),
+        })
+        .describe("Extra dice purchased with XP for an attribute"),
+    }),
+    charisma: zod.object({
+      value: zod
+        .number()
+        .default(getCharacterByUserIdResponseOneCharismaValueDefault),
+      dicePool: zod
+        .object({
+          d4: zod
+            .number()
+            .default(getCharacterByUserIdResponseOneCharismaDicePoolD4Default),
+          d6: zod
+            .number()
+            .default(getCharacterByUserIdResponseOneCharismaDicePoolD6Default),
+          d10: zod
+            .number()
+            .default(getCharacterByUserIdResponseOneCharismaDicePoolD10Default),
+          d20: zod
+            .number()
+            .default(getCharacterByUserIdResponseOneCharismaDicePoolD20Default),
+        })
+        .describe("Extra dice purchased with XP for an attribute"),
+    }),
+    spirit: zod.object({
+      value: zod
+        .number()
+        .default(getCharacterByUserIdResponseOneSpiritValueDefault),
+      dicePool: zod
+        .object({
+          d4: zod
+            .number()
+            .default(getCharacterByUserIdResponseOneSpiritDicePoolD4Default),
+          d6: zod
+            .number()
+            .default(getCharacterByUserIdResponseOneSpiritDicePoolD6Default),
+          d10: zod
+            .number()
+            .default(getCharacterByUserIdResponseOneSpiritDicePoolD10Default),
+          d20: zod
+            .number()
+            .default(getCharacterByUserIdResponseOneSpiritDicePoolD20Default),
+        })
+        .describe("Extra dice purchased with XP for an attribute"),
+    }),
+    maxHp: zod.number().default(getCharacterByUserIdResponseOneMaxHpDefault),
+    currentHp: zod
+      .number()
+      .default(getCharacterByUserIdResponseOneCurrentHpDefault),
+    berries: zod
+      .number()
+      .default(getCharacterByUserIdResponseOneBerriesDefault),
+    xpTotal: zod
+      .number()
+      .default(getCharacterByUserIdResponseOneXpTotalDefault),
+    logbook: zod
+      .string()
+      .default(getCharacterByUserIdResponseOneLogbookDefault),
+    xpLog: zod.array(
+      zod.object({
+        id: zod.string(),
+        attribute: zod.string(),
+        diceType: zod.string(),
+        cost: zod.number(),
+        timestamp: zod.string(),
+      }),
+    ),
+    inventory: zod
+      .array(
+        zod.object({
+          id: zod.string(),
+          name: zod.string(),
+          type: zod.enum(["weapon", "consumable", "tool"]),
+          damage: zod
+            .string()
+            .optional()
+            .describe("Dice notation e.g. 1d6, 1d10"),
+          attribute: zod
+            .string()
+            .optional()
+            .describe("Attribute key used for attack rolls"),
+          effect: zod
+            .string()
+            .optional()
+            .describe("Description of item effect"),
+          quantity: zod.number().min(1),
+          equipped: zod
+            .boolean()
+            .default(
+              getCharacterByUserIdResponseOneInventoryItemEquippedDefault,
+            ),
+          rarity: zod
+            .enum(["comum", "raro", "epico", "lendario"])
+            .optional()
+            .describe("Item rarity tier"),
+          masterGiven: zod
+            .boolean()
+            .optional()
+            .describe("Given by the GM\/system, does not cost Berries"),
+        }),
+      )
+      .default(getCharacterByUserIdResponseOneInventoryDefault),
+    photo: zod.string().optional().describe("Base64-encoded character photo"),
+    devilFruit: zod
+      .object({
+        active: zod
+          .boolean()
+          .default(getCharacterByUserIdResponseOneDevilFruitActiveDefault),
+        fruitId: zod.string().optional().describe("ID from the fruit catalog"),
+        type: zod.enum(["Paramecia", "Zoan", "Logia"]).optional(),
+        name: zod.string().optional(),
+        mastery: zod
+          .number()
+          .min(getCharacterByUserIdResponseOneDevilFruitMasteryMin)
+          .max(getCharacterByUserIdResponseOneDevilFruitMasteryMax)
+          .default(getCharacterByUserIdResponseOneDevilFruitMasteryDefault),
+        moves: zod
+          .array(
+            zod.object({
+              name: zod.string(),
+              damage: zod
+                .string()
+                .optional()
+                .describe("Dice notation e.g. 1d6"),
+              description: zod.string().optional(),
+            }),
+          )
+          .max(getCharacterByUserIdResponseOneDevilFruitMovesMax)
+          .optional(),
+      })
+      .optional(),
+    haki: zod
+      .object({
+        armamentoUnlocked: zod
+          .boolean()
+          .default(getCharacterByUserIdResponseOneHakiArmamentoUnlockedDefault),
+        observacaoUnlocked: zod
+          .boolean()
+          .default(
+            getCharacterByUserIdResponseOneHakiObservacaoUnlockedDefault,
+          ),
+        haoshokuUnlocked: zod
+          .boolean()
+          .default(getCharacterByUserIdResponseOneHakiHaoshokuUnlockedDefault),
+        armamentoActive: zod
+          .boolean()
+          .default(getCharacterByUserIdResponseOneHakiArmamentoActiveDefault),
+        observacaoActive: zod
+          .boolean()
+          .default(getCharacterByUserIdResponseOneHakiObservacaoActiveDefault),
+        haoshokuActive: zod
+          .boolean()
+          .default(getCharacterByUserIdResponseOneHakiHaoshokuActiveDefault),
+      })
+      .optional(),
+    currentStamina: zod
+      .number()
+      .default(getCharacterByUserIdResponseOneCurrentStaminaDefault),
+    skills: zod
+      .array(zod.string())
+      .default(getCharacterByUserIdResponseOneSkillsDefault)
+      .describe("List of acquired skill IDs"),
+  })
+  .and(
+    zod.object({
+      id: zod.number(),
+      updatedAt: zod.string(),
+    }),
+  );
+
+/**
+ * @summary (Master) Save a user's character
+ */
+export const SaveCharacterByUserIdParams = zod.object({
+  userId: zod.coerce.string(),
+});
+
+export const saveCharacterByUserIdBodyVigorValueDefault = 0;
+export const saveCharacterByUserIdBodyVigorDicePoolD4Default = 0;
+export const saveCharacterByUserIdBodyVigorDicePoolD6Default = 0;
+export const saveCharacterByUserIdBodyVigorDicePoolD10Default = 0;
+export const saveCharacterByUserIdBodyVigorDicePoolD20Default = 0;
+export const saveCharacterByUserIdBodyAgilityValueDefault = 0;
+export const saveCharacterByUserIdBodyAgilityDicePoolD4Default = 0;
+export const saveCharacterByUserIdBodyAgilityDicePoolD6Default = 0;
+export const saveCharacterByUserIdBodyAgilityDicePoolD10Default = 0;
+export const saveCharacterByUserIdBodyAgilityDicePoolD20Default = 0;
+export const saveCharacterByUserIdBodyCunningValueDefault = 0;
+export const saveCharacterByUserIdBodyCunningDicePoolD4Default = 0;
+export const saveCharacterByUserIdBodyCunningDicePoolD6Default = 0;
+export const saveCharacterByUserIdBodyCunningDicePoolD10Default = 0;
+export const saveCharacterByUserIdBodyCunningDicePoolD20Default = 0;
+export const saveCharacterByUserIdBodyCharismaValueDefault = 0;
+export const saveCharacterByUserIdBodyCharismaDicePoolD4Default = 0;
+export const saveCharacterByUserIdBodyCharismaDicePoolD6Default = 0;
+export const saveCharacterByUserIdBodyCharismaDicePoolD10Default = 0;
+export const saveCharacterByUserIdBodyCharismaDicePoolD20Default = 0;
+export const saveCharacterByUserIdBodySpiritValueDefault = 0;
+export const saveCharacterByUserIdBodySpiritDicePoolD4Default = 0;
+export const saveCharacterByUserIdBodySpiritDicePoolD6Default = 0;
+export const saveCharacterByUserIdBodySpiritDicePoolD10Default = 0;
+export const saveCharacterByUserIdBodySpiritDicePoolD20Default = 0;
+export const saveCharacterByUserIdBodyMaxHpDefault = 10;
+export const saveCharacterByUserIdBodyCurrentHpDefault = 10;
+export const saveCharacterByUserIdBodyBerriesDefault = 0;
+export const saveCharacterByUserIdBodyXpTotalDefault = 0;
+export const saveCharacterByUserIdBodyLogbookDefault = ``;
+export const saveCharacterByUserIdBodyInventoryItemEquippedDefault = false;
+export const saveCharacterByUserIdBodyInventoryDefault = [];
+export const saveCharacterByUserIdBodyDevilFruitActiveDefault = false;
+export const saveCharacterByUserIdBodyDevilFruitMasteryDefault = 0;
+export const saveCharacterByUserIdBodyDevilFruitMasteryMin = 0;
+export const saveCharacterByUserIdBodyDevilFruitMasteryMax = 100;
+
+export const saveCharacterByUserIdBodyDevilFruitMovesMax = 3;
+
+export const saveCharacterByUserIdBodyHakiArmamentoUnlockedDefault = false;
+export const saveCharacterByUserIdBodyHakiObservacaoUnlockedDefault = false;
+export const saveCharacterByUserIdBodyHakiHaoshokuUnlockedDefault = false;
+export const saveCharacterByUserIdBodyHakiArmamentoActiveDefault = false;
+export const saveCharacterByUserIdBodyHakiObservacaoActiveDefault = false;
+export const saveCharacterByUserIdBodyHakiHaoshokuActiveDefault = false;
+export const saveCharacterByUserIdBodyCurrentStaminaDefault = 0;
+export const saveCharacterByUserIdBodySkillsDefault = [];
+
+export const SaveCharacterByUserIdBody = zod.object({
+  playerName: zod.string(),
+  pirateName: zod.string(),
+  origin: zod.string(),
+  specialty: zod.string(),
+  vigor: zod.object({
+    value: zod.number().default(saveCharacterByUserIdBodyVigorValueDefault),
+    dicePool: zod
+      .object({
+        d4: zod
+          .number()
+          .default(saveCharacterByUserIdBodyVigorDicePoolD4Default),
+        d6: zod
+          .number()
+          .default(saveCharacterByUserIdBodyVigorDicePoolD6Default),
+        d10: zod
+          .number()
+          .default(saveCharacterByUserIdBodyVigorDicePoolD10Default),
+        d20: zod
+          .number()
+          .default(saveCharacterByUserIdBodyVigorDicePoolD20Default),
+      })
+      .describe("Extra dice purchased with XP for an attribute"),
+  }),
+  agility: zod.object({
+    value: zod.number().default(saveCharacterByUserIdBodyAgilityValueDefault),
+    dicePool: zod
+      .object({
+        d4: zod
+          .number()
+          .default(saveCharacterByUserIdBodyAgilityDicePoolD4Default),
+        d6: zod
+          .number()
+          .default(saveCharacterByUserIdBodyAgilityDicePoolD6Default),
+        d10: zod
+          .number()
+          .default(saveCharacterByUserIdBodyAgilityDicePoolD10Default),
+        d20: zod
+          .number()
+          .default(saveCharacterByUserIdBodyAgilityDicePoolD20Default),
+      })
+      .describe("Extra dice purchased with XP for an attribute"),
+  }),
+  cunning: zod.object({
+    value: zod.number().default(saveCharacterByUserIdBodyCunningValueDefault),
+    dicePool: zod
+      .object({
+        d4: zod
+          .number()
+          .default(saveCharacterByUserIdBodyCunningDicePoolD4Default),
+        d6: zod
+          .number()
+          .default(saveCharacterByUserIdBodyCunningDicePoolD6Default),
+        d10: zod
+          .number()
+          .default(saveCharacterByUserIdBodyCunningDicePoolD10Default),
+        d20: zod
+          .number()
+          .default(saveCharacterByUserIdBodyCunningDicePoolD20Default),
+      })
+      .describe("Extra dice purchased with XP for an attribute"),
+  }),
+  charisma: zod.object({
+    value: zod.number().default(saveCharacterByUserIdBodyCharismaValueDefault),
+    dicePool: zod
+      .object({
+        d4: zod
+          .number()
+          .default(saveCharacterByUserIdBodyCharismaDicePoolD4Default),
+        d6: zod
+          .number()
+          .default(saveCharacterByUserIdBodyCharismaDicePoolD6Default),
+        d10: zod
+          .number()
+          .default(saveCharacterByUserIdBodyCharismaDicePoolD10Default),
+        d20: zod
+          .number()
+          .default(saveCharacterByUserIdBodyCharismaDicePoolD20Default),
+      })
+      .describe("Extra dice purchased with XP for an attribute"),
+  }),
+  spirit: zod.object({
+    value: zod.number().default(saveCharacterByUserIdBodySpiritValueDefault),
+    dicePool: zod
+      .object({
+        d4: zod
+          .number()
+          .default(saveCharacterByUserIdBodySpiritDicePoolD4Default),
+        d6: zod
+          .number()
+          .default(saveCharacterByUserIdBodySpiritDicePoolD6Default),
+        d10: zod
+          .number()
+          .default(saveCharacterByUserIdBodySpiritDicePoolD10Default),
+        d20: zod
+          .number()
+          .default(saveCharacterByUserIdBodySpiritDicePoolD20Default),
+      })
+      .describe("Extra dice purchased with XP for an attribute"),
+  }),
+  maxHp: zod.number().default(saveCharacterByUserIdBodyMaxHpDefault),
+  currentHp: zod.number().default(saveCharacterByUserIdBodyCurrentHpDefault),
+  berries: zod.number().default(saveCharacterByUserIdBodyBerriesDefault),
+  xpTotal: zod.number().default(saveCharacterByUserIdBodyXpTotalDefault),
+  logbook: zod.string().default(saveCharacterByUserIdBodyLogbookDefault),
+  xpLog: zod.array(
+    zod.object({
+      id: zod.string(),
+      attribute: zod.string(),
+      diceType: zod.string(),
+      cost: zod.number(),
+      timestamp: zod.string(),
+    }),
+  ),
+  inventory: zod
+    .array(
+      zod.object({
+        id: zod.string(),
+        name: zod.string(),
+        type: zod.enum(["weapon", "consumable", "tool"]),
+        damage: zod
+          .string()
+          .optional()
+          .describe("Dice notation e.g. 1d6, 1d10"),
+        attribute: zod
+          .string()
+          .optional()
+          .describe("Attribute key used for attack rolls"),
+        effect: zod.string().optional().describe("Description of item effect"),
+        quantity: zod.number().min(1),
+        equipped: zod
+          .boolean()
+          .default(saveCharacterByUserIdBodyInventoryItemEquippedDefault),
+        rarity: zod
+          .enum(["comum", "raro", "epico", "lendario"])
+          .optional()
+          .describe("Item rarity tier"),
+        masterGiven: zod
+          .boolean()
+          .optional()
+          .describe("Given by the GM\/system, does not cost Berries"),
+      }),
+    )
+    .default(saveCharacterByUserIdBodyInventoryDefault),
+  photo: zod.string().optional().describe("Base64-encoded character photo"),
+  devilFruit: zod
+    .object({
+      active: zod
+        .boolean()
+        .default(saveCharacterByUserIdBodyDevilFruitActiveDefault),
+      fruitId: zod.string().optional().describe("ID from the fruit catalog"),
+      type: zod.enum(["Paramecia", "Zoan", "Logia"]).optional(),
+      name: zod.string().optional(),
+      mastery: zod
+        .number()
+        .min(saveCharacterByUserIdBodyDevilFruitMasteryMin)
+        .max(saveCharacterByUserIdBodyDevilFruitMasteryMax)
+        .default(saveCharacterByUserIdBodyDevilFruitMasteryDefault),
+      moves: zod
+        .array(
+          zod.object({
+            name: zod.string(),
+            damage: zod.string().optional().describe("Dice notation e.g. 1d6"),
+            description: zod.string().optional(),
+          }),
+        )
+        .max(saveCharacterByUserIdBodyDevilFruitMovesMax)
+        .optional(),
+    })
+    .optional(),
+  haki: zod
+    .object({
+      armamentoUnlocked: zod
+        .boolean()
+        .default(saveCharacterByUserIdBodyHakiArmamentoUnlockedDefault),
+      observacaoUnlocked: zod
+        .boolean()
+        .default(saveCharacterByUserIdBodyHakiObservacaoUnlockedDefault),
+      haoshokuUnlocked: zod
+        .boolean()
+        .default(saveCharacterByUserIdBodyHakiHaoshokuUnlockedDefault),
+      armamentoActive: zod
+        .boolean()
+        .default(saveCharacterByUserIdBodyHakiArmamentoActiveDefault),
+      observacaoActive: zod
+        .boolean()
+        .default(saveCharacterByUserIdBodyHakiObservacaoActiveDefault),
+      haoshokuActive: zod
+        .boolean()
+        .default(saveCharacterByUserIdBodyHakiHaoshokuActiveDefault),
+    })
+    .optional(),
+  currentStamina: zod
+    .number()
+    .default(saveCharacterByUserIdBodyCurrentStaminaDefault),
+  skills: zod
+    .array(zod.string())
+    .default(saveCharacterByUserIdBodySkillsDefault)
+    .describe("List of acquired skill IDs"),
+});
+
+export const saveCharacterByUserIdResponseOneVigorValueDefault = 0;
+export const saveCharacterByUserIdResponseOneVigorDicePoolD4Default = 0;
+export const saveCharacterByUserIdResponseOneVigorDicePoolD6Default = 0;
+export const saveCharacterByUserIdResponseOneVigorDicePoolD10Default = 0;
+export const saveCharacterByUserIdResponseOneVigorDicePoolD20Default = 0;
+export const saveCharacterByUserIdResponseOneAgilityValueDefault = 0;
+export const saveCharacterByUserIdResponseOneAgilityDicePoolD4Default = 0;
+export const saveCharacterByUserIdResponseOneAgilityDicePoolD6Default = 0;
+export const saveCharacterByUserIdResponseOneAgilityDicePoolD10Default = 0;
+export const saveCharacterByUserIdResponseOneAgilityDicePoolD20Default = 0;
+export const saveCharacterByUserIdResponseOneCunningValueDefault = 0;
+export const saveCharacterByUserIdResponseOneCunningDicePoolD4Default = 0;
+export const saveCharacterByUserIdResponseOneCunningDicePoolD6Default = 0;
+export const saveCharacterByUserIdResponseOneCunningDicePoolD10Default = 0;
+export const saveCharacterByUserIdResponseOneCunningDicePoolD20Default = 0;
+export const saveCharacterByUserIdResponseOneCharismaValueDefault = 0;
+export const saveCharacterByUserIdResponseOneCharismaDicePoolD4Default = 0;
+export const saveCharacterByUserIdResponseOneCharismaDicePoolD6Default = 0;
+export const saveCharacterByUserIdResponseOneCharismaDicePoolD10Default = 0;
+export const saveCharacterByUserIdResponseOneCharismaDicePoolD20Default = 0;
+export const saveCharacterByUserIdResponseOneSpiritValueDefault = 0;
+export const saveCharacterByUserIdResponseOneSpiritDicePoolD4Default = 0;
+export const saveCharacterByUserIdResponseOneSpiritDicePoolD6Default = 0;
+export const saveCharacterByUserIdResponseOneSpiritDicePoolD10Default = 0;
+export const saveCharacterByUserIdResponseOneSpiritDicePoolD20Default = 0;
+export const saveCharacterByUserIdResponseOneMaxHpDefault = 10;
+export const saveCharacterByUserIdResponseOneCurrentHpDefault = 10;
+export const saveCharacterByUserIdResponseOneBerriesDefault = 0;
+export const saveCharacterByUserIdResponseOneXpTotalDefault = 0;
+export const saveCharacterByUserIdResponseOneLogbookDefault = ``;
+export const saveCharacterByUserIdResponseOneInventoryItemEquippedDefault = false;
+export const saveCharacterByUserIdResponseOneInventoryDefault = [];
+export const saveCharacterByUserIdResponseOneDevilFruitActiveDefault = false;
+export const saveCharacterByUserIdResponseOneDevilFruitMasteryDefault = 0;
+export const saveCharacterByUserIdResponseOneDevilFruitMasteryMin = 0;
+export const saveCharacterByUserIdResponseOneDevilFruitMasteryMax = 100;
+
+export const saveCharacterByUserIdResponseOneDevilFruitMovesMax = 3;
+
+export const saveCharacterByUserIdResponseOneHakiArmamentoUnlockedDefault = false;
+export const saveCharacterByUserIdResponseOneHakiObservacaoUnlockedDefault = false;
+export const saveCharacterByUserIdResponseOneHakiHaoshokuUnlockedDefault = false;
+export const saveCharacterByUserIdResponseOneHakiArmamentoActiveDefault = false;
+export const saveCharacterByUserIdResponseOneHakiObservacaoActiveDefault = false;
+export const saveCharacterByUserIdResponseOneHakiHaoshokuActiveDefault = false;
+export const saveCharacterByUserIdResponseOneCurrentStaminaDefault = 0;
+export const saveCharacterByUserIdResponseOneSkillsDefault = [];
+
+export const SaveCharacterByUserIdResponse = zod
+  .object({
+    playerName: zod.string(),
+    pirateName: zod.string(),
+    origin: zod.string(),
+    specialty: zod.string(),
+    vigor: zod.object({
+      value: zod
+        .number()
+        .default(saveCharacterByUserIdResponseOneVigorValueDefault),
+      dicePool: zod
+        .object({
+          d4: zod
+            .number()
+            .default(saveCharacterByUserIdResponseOneVigorDicePoolD4Default),
+          d6: zod
+            .number()
+            .default(saveCharacterByUserIdResponseOneVigorDicePoolD6Default),
+          d10: zod
+            .number()
+            .default(saveCharacterByUserIdResponseOneVigorDicePoolD10Default),
+          d20: zod
+            .number()
+            .default(saveCharacterByUserIdResponseOneVigorDicePoolD20Default),
+        })
+        .describe("Extra dice purchased with XP for an attribute"),
+    }),
+    agility: zod.object({
+      value: zod
+        .number()
+        .default(saveCharacterByUserIdResponseOneAgilityValueDefault),
+      dicePool: zod
+        .object({
+          d4: zod
+            .number()
+            .default(saveCharacterByUserIdResponseOneAgilityDicePoolD4Default),
+          d6: zod
+            .number()
+            .default(saveCharacterByUserIdResponseOneAgilityDicePoolD6Default),
+          d10: zod
+            .number()
+            .default(saveCharacterByUserIdResponseOneAgilityDicePoolD10Default),
+          d20: zod
+            .number()
+            .default(saveCharacterByUserIdResponseOneAgilityDicePoolD20Default),
+        })
+        .describe("Extra dice purchased with XP for an attribute"),
+    }),
+    cunning: zod.object({
+      value: zod
+        .number()
+        .default(saveCharacterByUserIdResponseOneCunningValueDefault),
+      dicePool: zod
+        .object({
+          d4: zod
+            .number()
+            .default(saveCharacterByUserIdResponseOneCunningDicePoolD4Default),
+          d6: zod
+            .number()
+            .default(saveCharacterByUserIdResponseOneCunningDicePoolD6Default),
+          d10: zod
+            .number()
+            .default(saveCharacterByUserIdResponseOneCunningDicePoolD10Default),
+          d20: zod
+            .number()
+            .default(saveCharacterByUserIdResponseOneCunningDicePoolD20Default),
+        })
+        .describe("Extra dice purchased with XP for an attribute"),
+    }),
+    charisma: zod.object({
+      value: zod
+        .number()
+        .default(saveCharacterByUserIdResponseOneCharismaValueDefault),
+      dicePool: zod
+        .object({
+          d4: zod
+            .number()
+            .default(saveCharacterByUserIdResponseOneCharismaDicePoolD4Default),
+          d6: zod
+            .number()
+            .default(saveCharacterByUserIdResponseOneCharismaDicePoolD6Default),
+          d10: zod
+            .number()
+            .default(
+              saveCharacterByUserIdResponseOneCharismaDicePoolD10Default,
+            ),
+          d20: zod
+            .number()
+            .default(
+              saveCharacterByUserIdResponseOneCharismaDicePoolD20Default,
+            ),
+        })
+        .describe("Extra dice purchased with XP for an attribute"),
+    }),
+    spirit: zod.object({
+      value: zod
+        .number()
+        .default(saveCharacterByUserIdResponseOneSpiritValueDefault),
+      dicePool: zod
+        .object({
+          d4: zod
+            .number()
+            .default(saveCharacterByUserIdResponseOneSpiritDicePoolD4Default),
+          d6: zod
+            .number()
+            .default(saveCharacterByUserIdResponseOneSpiritDicePoolD6Default),
+          d10: zod
+            .number()
+            .default(saveCharacterByUserIdResponseOneSpiritDicePoolD10Default),
+          d20: zod
+            .number()
+            .default(saveCharacterByUserIdResponseOneSpiritDicePoolD20Default),
+        })
+        .describe("Extra dice purchased with XP for an attribute"),
+    }),
+    maxHp: zod.number().default(saveCharacterByUserIdResponseOneMaxHpDefault),
+    currentHp: zod
+      .number()
+      .default(saveCharacterByUserIdResponseOneCurrentHpDefault),
+    berries: zod
+      .number()
+      .default(saveCharacterByUserIdResponseOneBerriesDefault),
+    xpTotal: zod
+      .number()
+      .default(saveCharacterByUserIdResponseOneXpTotalDefault),
+    logbook: zod
+      .string()
+      .default(saveCharacterByUserIdResponseOneLogbookDefault),
+    xpLog: zod.array(
+      zod.object({
+        id: zod.string(),
+        attribute: zod.string(),
+        diceType: zod.string(),
+        cost: zod.number(),
+        timestamp: zod.string(),
+      }),
+    ),
+    inventory: zod
+      .array(
+        zod.object({
+          id: zod.string(),
+          name: zod.string(),
+          type: zod.enum(["weapon", "consumable", "tool"]),
+          damage: zod
+            .string()
+            .optional()
+            .describe("Dice notation e.g. 1d6, 1d10"),
+          attribute: zod
+            .string()
+            .optional()
+            .describe("Attribute key used for attack rolls"),
+          effect: zod
+            .string()
+            .optional()
+            .describe("Description of item effect"),
+          quantity: zod.number().min(1),
+          equipped: zod
+            .boolean()
+            .default(
+              saveCharacterByUserIdResponseOneInventoryItemEquippedDefault,
+            ),
+          rarity: zod
+            .enum(["comum", "raro", "epico", "lendario"])
+            .optional()
+            .describe("Item rarity tier"),
+          masterGiven: zod
+            .boolean()
+            .optional()
+            .describe("Given by the GM\/system, does not cost Berries"),
+        }),
+      )
+      .default(saveCharacterByUserIdResponseOneInventoryDefault),
+    photo: zod.string().optional().describe("Base64-encoded character photo"),
+    devilFruit: zod
+      .object({
+        active: zod
+          .boolean()
+          .default(saveCharacterByUserIdResponseOneDevilFruitActiveDefault),
+        fruitId: zod.string().optional().describe("ID from the fruit catalog"),
+        type: zod.enum(["Paramecia", "Zoan", "Logia"]).optional(),
+        name: zod.string().optional(),
+        mastery: zod
+          .number()
+          .min(saveCharacterByUserIdResponseOneDevilFruitMasteryMin)
+          .max(saveCharacterByUserIdResponseOneDevilFruitMasteryMax)
+          .default(saveCharacterByUserIdResponseOneDevilFruitMasteryDefault),
+        moves: zod
+          .array(
+            zod.object({
+              name: zod.string(),
+              damage: zod
+                .string()
+                .optional()
+                .describe("Dice notation e.g. 1d6"),
+              description: zod.string().optional(),
+            }),
+          )
+          .max(saveCharacterByUserIdResponseOneDevilFruitMovesMax)
+          .optional(),
+      })
+      .optional(),
+    haki: zod
+      .object({
+        armamentoUnlocked: zod
+          .boolean()
+          .default(
+            saveCharacterByUserIdResponseOneHakiArmamentoUnlockedDefault,
+          ),
+        observacaoUnlocked: zod
+          .boolean()
+          .default(
+            saveCharacterByUserIdResponseOneHakiObservacaoUnlockedDefault,
+          ),
+        haoshokuUnlocked: zod
+          .boolean()
+          .default(saveCharacterByUserIdResponseOneHakiHaoshokuUnlockedDefault),
+        armamentoActive: zod
+          .boolean()
+          .default(saveCharacterByUserIdResponseOneHakiArmamentoActiveDefault),
+        observacaoActive: zod
+          .boolean()
+          .default(saveCharacterByUserIdResponseOneHakiObservacaoActiveDefault),
+        haoshokuActive: zod
+          .boolean()
+          .default(saveCharacterByUserIdResponseOneHakiHaoshokuActiveDefault),
+      })
+      .optional(),
+    currentStamina: zod
+      .number()
+      .default(saveCharacterByUserIdResponseOneCurrentStaminaDefault),
+    skills: zod
+      .array(zod.string())
+      .default(saveCharacterByUserIdResponseOneSkillsDefault)
       .describe("List of acquired skill IDs"),
   })
   .and(

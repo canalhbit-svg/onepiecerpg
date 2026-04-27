@@ -3,8 +3,10 @@ import { Select } from "@/components/ui/Select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { ORIGINS, SPECIALTIES, ORIGIN_ADVANTAGES, SPECIALTY_PERKS } from "@/lib/game-data";
 import type { CharacterInput } from "@workspace/api-client-react";
-import { Info, Star } from "lucide-react";
+import { Info, Star, Anchor, Lock } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useAuth } from "@workspace/replit-auth-web";
+import { isMasterUser } from "@/lib/auth";
 
 interface Props {
   character: CharacterInput;
@@ -12,6 +14,8 @@ interface Props {
 }
 
 export function IdentitySection({ character, onChange }: Props) {
+  const { user } = useAuth();
+  const isPlayer = !isMasterUser(user);
   const originAdvantage = character.origin ? ORIGIN_ADVANTAGES[character.origin] : null;
   const specialtyPerk = character.specialty ? SPECIALTY_PERKS[character.specialty] : null;
 
@@ -58,6 +62,34 @@ export function IdentitySection({ character, onChange }: Props) {
               onChange={e => onChange({ specialty: e.target.value })}
               options={SPECIALTIES.map(o => ({ value: o, label: o }))}
               placeholder="Selecione a Especialidade"
+            />
+          </div>
+        </div>
+
+        {/* Bounty — read-only para jogadores */}
+        <div className="bg-amber-950/20 border border-amber-700/30 rounded-xl p-4 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <Anchor className="w-6 h-6 text-amber-400" />
+            <div>
+              <div className="text-[10px] uppercase tracking-widest text-amber-400 font-bold flex items-center gap-2">
+                Recompensa (Bounty)
+                {isPlayer && <Lock className="w-3 h-3" />}
+              </div>
+              <div className="text-xs text-muted-foreground">
+                {isPlayer ? "Definida pelo Mestre conforme suas façanhas." : "Você pode ajustar a recompensa deste pirata."}
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center gap-1">
+            <span className="text-amber-400 font-bold">฿</span>
+            <Input
+              type="number"
+              min={0}
+              value={character.bounty ?? 0}
+              onChange={e => onChange({ bounty: parseInt(e.target.value) || 0 })}
+              readOnly={isPlayer}
+              disabled={isPlayer}
+              className={`text-right text-amber-300 font-bold max-w-[180px] ${isPlayer ? "opacity-80 cursor-not-allowed" : ""}`}
             />
           </div>
         </div>

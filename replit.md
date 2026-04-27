@@ -91,6 +91,20 @@ Generated Zod schemas from the OpenAPI spec (e.g. `HealthCheckResponse`). Used b
 
 Generated React Query hooks and fetch client from the OpenAPI spec (e.g. `useHealthCheck`, `healthCheck`).
 
+### `lib/replit-auth-web` (`@workspace/replit-auth-web`)
+
+Browser auth helper that exposes a `useAuth()` React hook. Calls `/api/auth/user` to load the current session, and provides `login()` (redirects to `/api/login`) and `logout()` (redirects to `/api/logout`).
+
+## One Piece RPG Authentication
+
+The character-sheet artifact (`artifacts/one-piece-rpg`) sits behind Replit Auth (OIDC, Google + Replit SSO).
+
+- **Master vs Player roles**: master is hard-coded as `canalhbit@gmail.com` (constant in `artifacts/api-server/src/lib/roles.ts` and `artifacts/one-piece-rpg/src/lib/auth.ts`). Everyone else is `jogador`.
+- **Per-user character storage**: the `characters` table has a nullable `user_id` (varchar) column linking to `users.id`. Each user has their own sheet. On first login the legacy single-character row (if any) is claimed by the first user that connects.
+- **Player read-only locks**: jogadores cannot edit `xpTotal`, `bounty`, the Haki unlock toggles, or activate/remove their Akuma no Mi. Those controls are visually locked (Lock icon + dimmed) and reject saves with a toast.
+- **Master "Painel do Almirante"** (`/almirante` tab, only visible if logged in as master): lists all users with character info via `GET /api/admin/users`, and lets the master view any character's snapshot via `GET /api/admin/character/:userId`. Saving any character as master uses `POST /api/admin/character/:userId`.
+- **Login screen**: `LoginPage.tsx` — dark pirate theme, animated skull-logo, single "Entrar e Levantar Âncora" button that calls `useAuth().login()`.
+
 ### `scripts` (`@workspace/scripts`)
 
 Utility scripts package. Each script is a `.ts` file in `src/` with a corresponding npm script in `package.json`. Run scripts via `pnpm --filter @workspace/scripts run <script>`. Scripts can import any workspace package (e.g., `@workspace/db`) by adding it as a dependency in `scripts/package.json`.

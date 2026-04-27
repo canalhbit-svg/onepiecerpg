@@ -1,9 +1,10 @@
-import { pgTable, serial, text, integer, jsonb, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, integer, jsonb, timestamp, varchar, index } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
 export const charactersTable = pgTable("characters", {
   id: serial("id").primaryKey(),
+  userId: varchar("user_id"),
   playerName: text("player_name").notNull().default(""),
   pirateName: text("pirate_name").notNull().default(""),
   origin: text("origin").notNull().default(""),
@@ -17,6 +18,7 @@ export const charactersTable = pgTable("characters", {
   currentHp: integer("current_hp").notNull().default(10),
   berries: integer("berries").notNull().default(0),
   xpTotal: integer("xp_total").notNull().default(0),
+  bounty: integer("bounty").notNull().default(0),
   logbook: text("logbook").notNull().default(""),
   xpLog: jsonb("xp_log").notNull().default([]),
   inventory: jsonb("inventory").notNull().default([]),
@@ -26,7 +28,7 @@ export const charactersTable = pgTable("characters", {
   currentStamina: integer("current_stamina").notNull().default(0),
   skills: jsonb("skills").notNull().default([]),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
-});
+}, (table) => [index("idx_characters_user_id").on(table.userId)]);
 
 const dicepoolSchema = z.object({
   d4: z.number().int().min(0),
@@ -96,7 +98,7 @@ export const insertCharacterSchema = createInsertSchema(charactersTable, {
   devilFruit: devilFruitSchema.optional().nullable(),
   haki: hakiDataSchema.optional().nullable(),
   skills: z.array(z.string()),
-}).omit({ id: true, updatedAt: true });
+}).omit({ id: true, updatedAt: true, userId: true });
 
 export type InsertCharacter = z.infer<typeof insertCharacterSchema>;
 export type Character = typeof charactersTable.$inferSelect;

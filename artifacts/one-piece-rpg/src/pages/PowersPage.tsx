@@ -4,7 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, Flame, Eye, Crown, Zap, Shield, Wind, AlertTriangle, CheckCircle } from "lucide-react";
+import { Loader2, Flame, Eye, Crown, Zap, Shield, Wind, AlertTriangle, CheckCircle, Lock } from "lucide-react";
+import { useAuth } from "@workspace/replit-auth-web";
+import { isMasterUser } from "@/lib/auth";
 import {
   AKUMA_NO_MI, FRUIT_TYPE_COLORS, HAKI_LIST,
   type AkumaNoMi, type HakiId,
@@ -51,6 +53,8 @@ function StaminaBar({ current, max }: { current: number; max: number }) {
 export default function PowersPage() {
   const { data: character, isLoading, refetch } = useGetCharacter({ query: { retry: false } });
   const saveMutation = useSaveCharacter();
+  const { user } = useAuth();
+  const isPlayer = !isMasterUser(user);
 
   const [saving, setSaving] = useState(false);
   const [filterType, setFilterType] = useState<"Todos" | "Zoan" | "Paramecia" | "Logia">("Todos");
@@ -92,6 +96,10 @@ export default function PowersPage() {
 
   // ── handlers ────────────────────────────────────────────────────
   const handleSelectFruit = (fruit: AkumaNoMi) => {
+    if (isPlayer) {
+      showToast("err", "Apenas o Mestre pode ativar uma Akuma no Mi.");
+      return;
+    }
     save({
       devilFruit: {
         ...df,
@@ -106,10 +114,18 @@ export default function PowersPage() {
   };
 
   const handleRemoveFruit = () => {
+    if (isPlayer) {
+      showToast("err", "Apenas o Mestre pode remover sua Akuma no Mi.");
+      return;
+    }
     save({ devilFruit: { ...DEFAULT_DEVIL_FRUIT, active: false } as CharacterInput["devilFruit"] });
   };
 
   const handleMastery = (v: number) => {
+    if (isPlayer) {
+      showToast("err", "Apenas o Mestre pode alterar a Maestria da fruta.");
+      return;
+    }
     save({ devilFruit: { ...df, mastery: Math.max(0, Math.min(100, v)) } as CharacterInput["devilFruit"] });
   };
 
@@ -121,6 +137,10 @@ export default function PowersPage() {
   };
 
   const handleHaki = (key: keyof typeof DEFAULT_HAKI, val: boolean) => {
+    if (isPlayer && key.endsWith("Unlocked")) {
+      showToast("err", "Apenas o Mestre pode desbloquear o Haki.");
+      return;
+    }
     save({ haki: { ...haki, [key]: val } as CharacterInput["haki"] });
   };
 
@@ -436,10 +456,12 @@ export default function PowersPage() {
                   {/* GM unlock toggle */}
                   <div className="flex items-center gap-3">
                     <div className="text-right">
-                      <p className="text-xs text-muted-foreground">Mestre</p>
+                      <p className="text-xs text-muted-foreground flex items-center gap-1 justify-end">
+                        Mestre {isPlayer && <Lock className="w-3 h-3 text-amber-500" />}
+                      </p>
                       <div
                         onClick={() => handleHaki(unlockedKey, !isUnlocked)}
-                        className={`w-10 h-5 rounded-full cursor-pointer flex items-center px-1 transition-colors ${isUnlocked ? "bg-green-600" : "bg-gray-700"}`}
+                        className={`w-10 h-5 rounded-full flex items-center px-1 transition-colors ${isUnlocked ? "bg-green-600" : "bg-gray-700"} ${isPlayer ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
                       >
                         <div className={`w-3.5 h-3.5 rounded-full bg-white transition-transform ${isUnlocked ? "translate-x-5" : "translate-x-0"}`} />
                       </div>
