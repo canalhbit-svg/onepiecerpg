@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { useGetCharacter, useSaveCharacter, type CharacterInput, type InventoryItem } from "@workspace/api-client-react";
+import { type CharacterInput, type InventoryItem } from "@workspace/api-client-react";
+import { useCharacterData } from "@/lib/character-data";
 import { useDebounceCallback } from "usehooks-ts";
 import { IdentitySection } from "@/components/character/IdentitySection";
 import { XPSection } from "@/components/character/XPSection";
@@ -35,9 +36,8 @@ const defaultChar: CharacterInput = {
   devilFruit: null,
 };
 
-export default function CharacterSheet() {
-  const { data: serverChar, isLoading } = useGetCharacter({ query: { retry: false } });
-  const saveMutation = useSaveCharacter();
+export default function CharacterSheet({ targetUserId }: { targetUserId?: string } = {}) {
+  const { data: serverChar, isLoading, save: saveMutation } = useCharacterData(targetUserId);
 
   const [localChar, setLocalChar] = useState<CharacterInput | null>(null);
   const [isSaving, setIsSaving] = useState(false);

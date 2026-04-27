@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useGetCharacter, useSaveCharacter, type CharacterInput } from "@workspace/api-client-react";
+import { type CharacterInput } from "@workspace/api-client-react";
+import { useCharacterData } from "@/lib/character-data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -50,11 +51,11 @@ function StaminaBar({ current, max }: { current: number; max: number }) {
   );
 }
 
-export default function PowersPage() {
-  const { data: character, isLoading, refetch } = useGetCharacter({ query: { retry: false } });
-  const saveMutation = useSaveCharacter();
+export default function PowersPage({ targetUserId }: { targetUserId?: string } = {}) {
+  const { data: character, isLoading, refetch, save: saveMutation } = useCharacterData(targetUserId);
   const { user } = useAuth();
-  const isPlayer = !isMasterUser(user);
+  // When master is editing another user's sheet, no locks apply.
+  const isPlayer = !targetUserId && !isMasterUser(user);
 
   const [saving, setSaving] = useState(false);
   const [filterType, setFilterType] = useState<"Todos" | "Zoan" | "Paramecia" | "Logia">("Todos");

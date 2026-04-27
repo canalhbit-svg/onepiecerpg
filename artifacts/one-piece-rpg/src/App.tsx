@@ -8,6 +8,7 @@ import ShipSheet from "@/pages/ShipSheet";
 import MarketPage from "@/pages/MarketPage";
 import PowersPage from "@/pages/PowersPage";
 import AdminPage from "@/pages/AdminPage";
+import AdminEditPage from "@/pages/AdminEditPage";
 import LoginPage from "@/pages/LoginPage";
 import NotFound from "@/pages/not-found";
 import { ScrollText, Ship as ShipIcon, ShoppingBag, Flame, Crown, LogOut } from "lucide-react";
@@ -81,6 +82,7 @@ function Router() {
           <Route path="/market" component={MarketPage} />
           <Route path="/powers" component={PowersPage} />
           <Route path="/almirante" component={AdminPage} />
+          <Route path="/almirante/:userId" component={AdminEditPage} />
           <Route component={NotFound} />
         </Switch>
       </main>
