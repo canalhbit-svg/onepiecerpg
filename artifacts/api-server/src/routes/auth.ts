@@ -68,18 +68,44 @@ async function upsertUser(claims: Record<string, unknown>) {
       | null,
   };
 
-  const [user] = await db
-    .insert(usersTable)
-    .values(userData)
-    .onConflictDoUpdate({
-      target: usersTable.id,
-      set: {
-        ...userData,
-        updatedAt: new Date(),
-      },
-    })
-    .returning();
-  return user;
+  try {
+    const [user] = await db
+      .insert(usersTable)
+      .values(userData)
+      .onConflictDoUpdate({
+        target: usersTable.id,
+        set: {
+          ...userData,
+          updatedAt: new Date(),
+        },
+      })
+      .returning();
+    return user;
+  } catch (e) {
+    const cause = (e as { cause?: { code?: string; constraint?: string; detail?: string; message?: string } }).cause;
+    // Most common case: another row already has this email (different OIDC provider sub).
+    // Update by email and overwrite the id to the new sub.
+    if (cause?.code === "23505" && userData.email) {
+      const [user] = await db
+        .insert(usersTable)
+        .values(userData)
+        .onConflictDoUpdate({
+          target: usersTable.email,
+          set: {
+            id: userData.id,
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            profileImageUrl: userData.profileImageUrl,
+            updatedAt: new Date(),
+          },
+        })
+        .returning();
+      return user;
+    }
+    // Re-throw with the underlying postgres error visible.
+    const pgMsg = cause?.message || cause?.detail || "unknown";
+    throw new Error(`upsertUser failed: ${pgMsg} (code=${cause?.code ?? "?"}, constraint=${cause?.constraint ?? "?"})`, { cause: e });
+  }
 }
 
 router.get("/auth/user", (req: Request, res: Response) => {

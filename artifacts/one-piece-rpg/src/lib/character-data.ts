@@ -24,13 +24,13 @@ function useAdminCharacter(userId: string, enabled: boolean): CharacterDataApi {
   const queryClient = useQueryClient();
   const queryKey = ["admin-character-edit", userId];
 
-  const query = useQuery<Character | undefined>({
+  const query = useQuery<Character | null>({
     queryKey,
     queryFn: async () => {
       const res = await fetch(`/api/admin/character/${userId}`, { credentials: "include" });
-      if (res.status === 404) return undefined;
+      if (res.status === 404) return null;
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return res.json();
+      return (await res.json()) as Character;
     },
     retry: false,
     enabled,
