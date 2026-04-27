@@ -12,6 +12,12 @@ import {
   AKUMA_NO_MI, FRUIT_TYPE_COLORS, HAKI_LIST,
   type AkumaNoMi, type HakiId,
 } from "@/lib/powers-data";
+import {
+  getHakiTrack,
+  getHakiLevel,
+  getAkumaUseCost,
+} from "@/lib/progression";
+import { HakiProgressionPanel, AkumaProgressionPanel } from "@/components/character/PowerProgression";
 
 const DEFAULT_HAKI = {
   armamentoUnlocked: false,
@@ -170,23 +176,37 @@ export default function PowersPage({ targetUserId }: { targetUserId?: string } =
     }
   };
 
+  const vigorVal = character.vigor?.value ?? 0;
+  const cunningVal = character.cunning?.value ?? 0;
+  const spiritVal = character.spirit?.value ?? 0;
+
+  const armamentoLevel = getHakiLevel(vigorVal, getHakiTrack("armamento"));
+  const observacaoLevel = getHakiLevel(cunningVal, getHakiTrack("observacao"));
+  const haoshokuLevel = getHakiLevel(spiritVal, getHakiTrack("haoshoku"));
+
+  const armamentoCost = armamentoLevel.current?.staminaCost ?? 5;
+  const haoshokuCost = haoshokuLevel.current?.staminaCost ?? 50;
+  const fruitMoveCost = getAkumaUseCost(spiritVal, df.mastery ?? 0);
+
   const handleUseHakiArmamento = () => {
-    if (currentStamina < 5) { showToast("err", "Stamina insuficiente!"); return; }
-    save({ currentStamina: currentStamina - 5 });
-    showToast("ok", "Haki de Armamento ativado! -5 Stamina. +1d6 dano neste ataque.");
+    if (armamentoLevel.level === 0) { showToast("err", "Sem Vigor suficiente para usar Armamento (NV 1 = Vigor 10)."); return; }
+    if (currentStamina < armamentoCost) { showToast("err", `Stamina insuficiente (custo: ${armamentoCost})!`); return; }
+    save({ currentStamina: currentStamina - armamentoCost });
+    showToast("ok", `Armamento NV ${armamentoLevel.level} ativado! -${armamentoCost} Stamina.`);
   };
 
   const handleImporPresenca = () => {
-    if (currentStamina < 50) { showToast("err", "Stamina insuficiente (custo: 50)!"); return; }
+    if (haoshokuLevel.level === 0) { showToast("err", "Sem Espírito suficiente para usar Haoshoku (NV 1 = Espírito 20)."); return; }
+    if (currentStamina < haoshokuCost) { showToast("err", `Stamina insuficiente (custo: ${haoshokuCost})!`); return; }
     const roll = Math.floor(Math.random() * 20) + 1;
-    save({ currentStamina: currentStamina - 50 });
-    showToast("ok", `Presença imposta! Rolagem: ${roll} (Espírito vs Vigor). -50 Stamina.`);
+    save({ currentStamina: currentStamina - haoshokuCost });
+    showToast("ok", `Presença imposta NV ${haoshokuLevel.level}! Rolagem ${roll} (Espírito vs Vigor). -${haoshokuCost} Stamina.`);
   };
 
   const handleUseFruitMove = () => {
-    if (currentStamina < 10) { showToast("err", "Stamina insuficiente (custo: 10)!"); return; }
-    save({ currentStamina: currentStamina - 10 });
-    showToast("ok", "Golpe da Fruta usado! -10 Stamina.");
+    if (currentStamina < fruitMoveCost) { showToast("err", `Stamina insuficiente (custo: ${fruitMoveCost})!`); return; }
+    save({ currentStamina: currentStamina - fruitMoveCost });
+    showToast("ok", `Golpe da Fruta usado! -${fruitMoveCost} Stamina.`);
   };
 
   const filteredFruits = AKUMA_NO_MI.filter(f => {
@@ -329,11 +349,11 @@ export default function PowersPage({ targetUserId }: { targetUserId?: string } =
               <Button
                 variant="gold"
                 className="w-full"
-                disabled={currentStamina < 10}
+                disabled={currentStamina < fruitMoveCost}
                 onClick={handleUseFruitMove}
               >
                 <Flame className="w-4 h-4 mr-2" />
-                Usar Golpe da Fruta (-10 Stamina)
+                Usar Golpe da Fruta (-{fruitMoveCost} Stamina)
               </Button>
             </div>
           ) : (
@@ -387,6 +407,9 @@ export default function PowersPage({ targetUserId }: { targetUserId?: string } =
               })}
             </div>
           </div>
+
+          {/* Akuma progression */}
+          <AkumaProgressionPanel character={character} fruitType={selectedFruit?.type ?? null} />
 
           {/* Custom moves */}
           {df.active && (
@@ -484,12 +507,24 @@ export default function PowersPage({ targetUserId }: { targetUserId?: string } =
 
                 <p className="text-sm text-muted-foreground">{h.description}</p>
 
-                {isUnlocked && (
-                  <div className="bg-black/30 border border-border/60 rounded-lg px-3 py-2">
-                    <p className="text-xs text-yellow-400 font-bold">{h.bonus}</p>
-                    <p className="text-xs text-muted-foreground mt-1">Custo: {h.staminaCost} Stamina por uso</p>
-                  </div>
-                )}
+                {isUnlocked && (() => {
+                  const lvl =
+                    h.id === "armamento" ? armamentoLevel :
+                    h.id === "observacao" ? observacaoLevel :
+                    haoshokuLevel;
+                  const cost =
+                    h.id === "armamento" ? armamentoCost :
+                    h.id === "observacao" ? (lvl.current?.staminaCost ?? 5) :
+                    haoshokuCost;
+                  return (
+                    <div className="bg-black/30 border border-border/60 rounded-lg px-3 py-2">
+                      <p className="text-xs text-yellow-400 font-bold">
+                        {lvl.current ? `NV ${lvl.level} — ${lvl.current.summary}` : h.bonus}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">Custo atual: {cost} Stamina por uso</p>
+                    </div>
+                  );
+                })()}
 
                 {/* Action buttons */}
                 {isUnlocked && isActive && (
@@ -499,16 +534,18 @@ export default function PowersPage({ targetUserId }: { targetUserId?: string } =
                         variant="outline"
                         size="sm"
                         className="border-gray-500/60 text-gray-300 hover:bg-gray-800/40"
-                        disabled={currentStamina < 5 || isExhausted}
+                        disabled={currentStamina < armamentoCost || isExhausted || armamentoLevel.level === 0}
                         onClick={handleUseHakiArmamento}
                       >
-                        <Shield className="w-4 h-4 mr-2" /> Ativar Armamento (-5 Stamina)
+                        <Shield className="w-4 h-4 mr-2" /> Ativar Armamento NV {armamentoLevel.level} (-{armamentoCost} Stamina)
                       </Button>
                     )}
                     {h.id === "observacao" && (
                       <div className="flex items-center gap-2 bg-blue-950/30 border border-blue-700/40 rounded-lg px-3 py-2">
                         <Eye className="w-4 h-4 text-blue-400" />
-                        <span className="text-sm text-blue-300 font-semibold">Prever Movimentos ativo — +4 Agilidade/Esquiva</span>
+                        <span className="text-sm text-blue-300 font-semibold">
+                          Observação NV {observacaoLevel.level} ativo — {observacaoLevel.current?.summary ?? "Aguardando Astúcia 10."}
+                        </span>
                       </div>
                     )}
                     {h.id === "haoshoku" && (
@@ -516,10 +553,10 @@ export default function PowersPage({ targetUserId }: { targetUserId?: string } =
                         variant="outline"
                         size="sm"
                         className="border-yellow-600/60 text-yellow-300 hover:bg-yellow-950/30"
-                        disabled={currentStamina < 50 || isExhausted}
+                        disabled={currentStamina < haoshokuCost || isExhausted || haoshokuLevel.level === 0}
                         onClick={handleImporPresenca}
                       >
-                        <Crown className="w-4 h-4 mr-2" /> Impor Presença (-50 Stamina)
+                        <Crown className="w-4 h-4 mr-2" /> Impor Presença NV {haoshokuLevel.level} (-{haoshokuCost} Stamina)
                       </Button>
                     )}
                   </div>
@@ -533,6 +570,9 @@ export default function PowersPage({ targetUserId }: { targetUserId?: string } =
               </div>
             );
           })}
+
+          {/* Haki progression panel */}
+          <HakiProgressionPanel character={character} haki={haki} />
         </CardContent>
       </Card>
 

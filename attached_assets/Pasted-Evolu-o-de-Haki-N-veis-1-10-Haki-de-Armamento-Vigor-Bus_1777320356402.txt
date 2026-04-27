@@ -1,0 +1,242 @@
+Evolução de Haki (Níveis 1-10)
+🛡️ Haki de Armamento (Vigor) (Busoshoku)
+Evolução focada em endurecimento e projeção.
+Nível 1 (Base): +1d6 de dano físico | Fere Logias | Custo: 5 Stamina.
+Nível 3: +1d8 de dano.
+Nível 5 (Koka): +1d10 de dano | Destrava: Endurecimento Negro (Ganha +5 de Defesa física). | Custo: 10 Stamina.
+
+
+Nível 7: +1d12 de dano | Custo sobe para 10 Stamina (pelo poder maior).
+Nível 10 (Ryou): +1d20 de dano | Destrava: Dano Interno (Ignora a Redução de Dano/Armadura do alvo). | Custo: 20 Stamina.
+👁️ Haki de Observação (Astúcia) (Kenbunshoku)
+Evolução focada em antecipação e alcance.
+Nível 1 (Base): +4 em Esquiva/Agilidade | Prever Movimentos | Custo: 5 Stamina.
+Nível 3: +6 em Esquiva.
+Nível 5 (Voz de Todas as Coisas): +8 em Esquiva | Destrava: Sentir Intenção (Não pode ser flanqueado ou pego de surpresa). | Custo: 10 Stamina.
+Nível 7: +10 em Esquiva | Custo sobe para 10 Stamina.
+Nível 10 (Visão do Futuro): +1d20 em Esquiva | Destrava: Antecipação Total (Pode escolher agir antes de qualquer inimigo na rodada). | Custo: 20 Stamina.
+👑 Haki do Conquistador (Espírito) (Haoshoku)
+Evolução focada em domínio e impacto real.
+Nível 1 (Base): Teste Espírito vs Vigor para desmaiar inimigos fracos | Custo: 50 Stamina.
+Nível 4: Afeta uma área maior (Raio de 20 metros).
+Nível 7 (Pressão Física): Além de desmaiar, causa dano em objetos ao redor e reduz os Stats de inimigos fortes em -4 por 2 rodadas. | Custo: 100 Stamina.
+
+
+Nível 10 (Infusão): +1d20 de dano extra | Destrava: Revestimento de Rei (Pode ser usado junto com o Armamento para ataques devastadores).  | Custo: 200 Stamina.
+
+Base de Evolução: Akuma no Mi
+Todas as frutas progridem com o stat Espírito.
+🐾 Tipo Zoan (Transformação)
+Focada em sobrevivência, combate corpo a corpo e atributos físicos.
+Nível 1 (Formas Iniciais): O usuário pode alternar entre Forma Humana, Animal e Híbrida. Ganha bônus passivo em Vigor enquanto transformado.
+Nível 3 (Instinto Animal): Destrava sentidos aguçados (Olfato/Audição) e uma técnica de ataque característica da espécie.
+Nível 5 (Resiliência Zoan): Destrava Regeneração Passiva. Recupera uma pequena quantidade de Vida por turno.
+Nível 8 (Forma Desperta/Monstruosa): Aumenta drasticamente o tamanho e os stats físicos. Custo de Stamina reduzido para manter a forma.
+Nível 10 (Mestre das Formas): O bônus de Espírito se converte em 1d20 para qualquer teste físico. Imortalidade momentânea (sobrevive a um golpe letal por cena).
+🌀 Tipo Paramecia (Sistema)
+Focada em versatilidade, efeitos de status e alteração da realidade/corpo.
+Nível 1 (Propriedade Corporal): O corpo do usuário ganha a característica da fruta (ex: ser borracha, produzir fios). Imunidade a danos específicos baseados na fruta.
+Nível 3 (Projeção): O usuário aprende a exteriorizar seu poder (ex: lançar ataques à distância ou criar objetos).
+Nível 5 (Controle de Área): Destrava habilidades que afetam o campo de batalha ou múltiplos alvos simultaneamente.
+Nível 8 (Técnica Suprema): Uma habilidade de alto custo de Stamina que define o "trunfo" do usuário.
+Nível 10 (Despertar): O usuário transforma o ambiente ao seu redor na propriedade da sua fruta. Bônus de 1d20 para manipulação do cenário.
+💨 Tipo Logia (Elemento)
+Focada em intangibilidade, controle elemental e destruição massiva.
+Nível 1 (Intangibilidade Reativa): O usuário se torna o elemento. Ataques sem Haki passam por ele sem causar dano. Pode criar pequenas quantidades do elemento.
+Nível 3 (Deslocamento Elemental): Permite voar ou se mover em alta velocidade usando o elemento (ex: propulsão de fogo, raio, fumaça).
+Nível 5 (Bombardeio): Destrava ataques de larga escala. O usuário pode cobrir o campo com seu elemento.
+Nível 8 (Estado de Logia Pura): O custo de Stamina para se manter intangível cai para 0. O usuário pode se fundir com o elemento no ambiente.
+Nível 10 (Alteração Climática): O poder é tão vasto que altera o clima da ilha permanentemente enquanto o usuário estiver nela. Bônus de 1d20 em dano elemental.
+📊 Tabela de Progressão: Akuma no Mi
+O poder da fruta evolui conforme a vontade do usuário (Espírito).
+
+Nível
+Espírito
+Destravas de Poder
+Custo (Stamina)
+NV 1
+Base
+Passiva: Propriedade do corpo ou forma inicial.
+0 (Passivo)
+NV 2
+10
+Habilidade Básica: Primeiro ataque ou uso ativo.
+5 por uso
+NV 3
+15
+Mobilidade: Dash, voo ou salto elemental/corporal.
+10 por uso
+NV 4
+20
+Defesa/Utilidade: Escudos, bloqueios ou criação de itens.
+10 por uso
+NV 5
+25
+Ataque em Área: Golpe que atinge múltiplos alvos.
+15 por uso
+NV 6
+30
+Maestria: Reduz o custo das habilidades NV 2 e 3 em -2.
+-
+NV 7
+35
+Forma Superior: Transformação de combate (Ex: Gears).
+20 (Ativação)
+NV 8
+40
+Técnica Suprema: O golpe mais forte antes do despertar.
+30 por uso
+NV 9
+45
+Resistência: Pode usar a fruta mesmo com 1 de HP.
+-
+NV 10
+50
+DESPERTAR: Transforma o ambiente (Bônus 1d20).
+50 (Ativação)
+
+
+🛡️ Haki de Armamento (Busoshoku)
+Evolução baseada no Stat Vigor (Marcos de 10 em 10).
+NV
+Vigor
+Bônus e Destravas
+Custo
+NV 1
+10
+Base: +1d6 de dano físico. Permite ferir usuários de Logia.
+5
+NV 2
+20
+Bônus de +2 em testes de Força para bloqueios.
+5
+NV 3
+30
+O bônus de dano sobe para +1d8.
+5
+NV 4
+40
+O usuário pode imbuir armas pequenas (facas, flechas, balas).
+5
+NV 5
+50
+Endurecimento (Koka): +1d10 de dano e +5 de Defesa Física.
+10
+NV 6
+60
+Resistência Elemental: Reduz danos de fogo/gelo em 2.
+10
+NV 7
+70
+O bônus de dano sobe para +1d12.
+10
+NV 8
+80
+O bônus de Defesa Física do NV 5 sobe para +8.
+15
+NV 9
+90
+Concentração: Pode manter o Haki ativo por mais tempo fora de combate.
+15
+NV 10
+100
+Fluxo (Ryou): +1d20 de dano. Ignora RD e Armadura do alvo.
+20
+
+
+👁️ Haki de Observação (Kenbunshoku)
+Evolução baseada no Stat Astúcia (Marcos de 10 em 10).
+Nível
+Astúcia
+Bônus e Destravas
+Custo
+NV 1
+10
+Base: +4 em Esquiva/Agilidade. Permite prever movimentos.
+5
+NV 2
+20
+Sente a presença de seres vivos em um raio de 10 metros.
+5
+NV 3
+30
+O bônus de Esquiva sobe para +6.
+5
+NV 4
+40
+Identifica o nível de poder (Stats) aproximado do oponente.
+5
+NV 5
+50
+Sentir Intenção: +8 Esquiva. Imunidade a flanqueamento/surpresa.
+10
+NV 6
+60
+Alcance expandido: Sente presenças em até 100 metros.
+10
+NV 7
+70
+O bônus de Esquiva sobe para +10.
+10
+NV 8
+80
+Identifica fraquezas: Próximo ataque tem +2 na margem de Crítico.
+15
+NV 9
+90
+Radar Emocional: Sente mentiras e o estado mental de NPCs.
+15
+NV 10
+100
+Visão do Futuro: +1d20 em Esquiva. Age antes de qualquer um.
+20
+
+
+
+👑 Compêndio: Haki do Conquistador (Haoshoku)
+Evolução baseada no Stat Espírito (Marcos de 20 em 20).
+Nível
+Espírito
+Habilidade / Destrava
+Custo (Stamina)
+NV 1
+20
+Base: Teste Espírito vs Vigor para desmaiar inimigos fracos.
+50
+NV 2
+40
+Aumento na dificuldade do teste de resistência dos inimigos.
+50
+NV 3
+60
+Precisão do Rei: Pode escolher alvos específicos para não serem afetados.
+50
+NV 4
+80
+Domínio de Área: O raio de efeito aumenta para 20 metros.
+50
+NV 5
+100
+Inimigos que resistirem recebem penalidade de -2 em todos os dados.
+75
+NV 6
+120
+Intimidação: Monstros e animais selvagens recuam ou obedecem ordens simples.
+75
+NV 7
+140
+Pressão Física: Dano em objetos e reduz Stats de inimigos fortes em -4 (2 rodadas).
+100
+NV 8
+160
+Presença Esmagadora: Inimigos afetados perdem 10 de Stamina por turno.
+150
+NV 9
+180
+Aura Suprema: O custo de outros Hakis ativos é reduzido pela metade.
+150
+NV 10
+200
+Revestimento de Rei: Adiciona +1d20 de dano extra em ataques.
+200
+
