@@ -11,8 +11,9 @@ import { XPLogSection } from "@/components/character/XPLogSection";
 import { InventorySection } from "@/components/character/InventorySection";
 import { DICE_COSTS, SPECIALTY_STARTER_KITS, type AttributeKey } from "@/lib/game-data";
 import { generateId } from "@/lib/utils";
-import { Loader2, Save } from "lucide-react";
+import { Loader2, Save, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/Button";
 
 const defaultChar: CharacterInput = {
   playerName: "",
@@ -51,12 +52,22 @@ export default function CharacterSheet({ targetUserId }: { targetUserId?: string
     }
   }, [serverChar, isLoading, localChar]);
 
-  const debouncedSave = useDebounceCallback((charToSave: CharacterInput) => {
+  const latestCharRef = useRef<CharacterInput | null>(null);
+  const [hasUnsaved, setHasUnsaved] = useState(false);
+
+  const performSave = (charToSave: CharacterInput) => {
     setIsSaving(true);
     saveMutation.mutate(
       { data: charToSave },
-      { onSettled: () => setTimeout(() => setIsSaving(false), 1000) }
+      {
+        onSuccess: () => setHasUnsaved(false),
+        onSettled: () => setTimeout(() => setIsSaving(false), 800),
+      }
     );
+  };
+
+  const debouncedSave = useDebounceCallback((charToSave: CharacterInput) => {
+    performSave(charToSave);
   }, 1500);
 
   const handleChange = (updates: Partial<CharacterInput>) => {
@@ -77,8 +88,37 @@ export default function CharacterSheet({ targetUserId }: { targetUserId?: string
     }
 
     setLocalChar(updated);
+    latestCharRef.current = updated;
+    setHasUnsaved(true);
     debouncedSave(updated);
   };
+
+  const handleManualSave = () => {
+    if (!latestCharRef.current) return;
+    debouncedSave.cancel();
+    performSave(latestCharRef.current);
+  };
+
+  // Flush pending save on unmount and before the page unloads
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (latestCharRef.current && hasUnsaved) {
+        debouncedSave.cancel();
+        performSave(latestCharRef.current);
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      if (latestCharRef.current && hasUnsaved) {
+        debouncedSave.cancel();
+        performSave(latestCharRef.current);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasUnsaved]);
 
   if (isLoading || !localChar) {
     return (
@@ -145,6 +185,26 @@ export default function CharacterSheet({ targetUserId }: { targetUserId?: string
       <InventorySection character={localChar} onChange={handleChange} />
 
       <LogbookSection character={localChar} onChange={handleChange} />
+
+      {/* Manual save button (floating) */}
+      <div className="fixed bottom-6 right-6 z-40">
+        <Button
+          variant="gold"
+          size="lg"
+          onClick={handleManualSave}
+          disabled={isSaving || !hasUnsaved}
+          className="shadow-2xl shadow-primary/40 rounded-full h-14 px-6 font-bold tracking-wider"
+          data-testid="button-manual-save"
+        >
+          {isSaving ? (
+            <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Salvando</>
+          ) : hasUnsaved ? (
+            <><Save className="w-5 h-5 mr-2" /> Salvar Ficha</>
+          ) : (
+            <><Check className="w-5 h-5 mr-2" /> Tudo Salvo</>
+          )}
+        </Button>
+      </div>
     </div>
   );
 }
