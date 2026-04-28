@@ -1,6 +1,6 @@
 import { Router, type IRouter, type Request, type Response, type NextFunction } from "express";
-import { db, charactersTable, usersTable, insertCharacterSchema } from "@workspace/db";
-import { eq } from "drizzle-orm";
+import { db, charactersTable, usersTable, shipsTable, insertCharacterSchema } from "@workspace/db";
+import { desc, eq } from "drizzle-orm";
 import { isMaster, getRole } from "../lib/roles";
 
 const router: IRouter = Router();
@@ -47,6 +47,16 @@ router.get("/admin/users", requireMaster, async (req, res) => {
     res.json(rows);
   } catch (err) {
     req.log.error({ err }, "Failed to list users");
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.get("/admin/ships", requireMaster, async (req, res) => {
+  try {
+    const ships = await db.select().from(shipsTable).orderBy(desc(shipsTable.updatedAt));
+    res.json(ships);
+  } catch (err) {
+    req.log.error({ err }, "Failed to list ships");
     res.status(500).json({ error: "Internal server error" });
   }
 });
