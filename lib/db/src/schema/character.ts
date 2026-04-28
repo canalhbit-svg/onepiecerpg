@@ -93,11 +93,11 @@ export const insertCharacterSchema = createInsertSchema(charactersTable, {
   cunning: attributeSchema,
   charisma: attributeSchema,
   spirit: attributeSchema,
-  xpLog: z.array(xpLogEntrySchema),
-  inventory: z.array(inventoryItemSchema),
+  xpLog: z.array(xpLogEntrySchema).default([]),
+  inventory: z.array(inventoryItemSchema).default([]),
   devilFruit: devilFruitSchema.optional().nullable(),
   haki: hakiDataSchema.optional().nullable(),
-  skills: z.array(z.string()),
+  skills: z.array(z.string()).default([]),
 }).omit({ id: true, updatedAt: true, userId: true });
 
 export type InsertCharacter = z.infer<typeof insertCharacterSchema>;
